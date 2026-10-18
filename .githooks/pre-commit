@@ -1,0 +1,3 @@
+#!/bin/sh
+# Retail-data guard. Enable with: git config core.hooksPath .githooks
+exec python3 "$(git rev-parse --show-toplevel)/scripts/check_no_retail.py"
