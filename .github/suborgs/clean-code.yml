@@ -1,0 +1,33 @@
+# safe-settings suborg: the clean-room code repos.
+# Each repo must exist before safe-settings can configure it.
+
+suborgrepos:
+  - specs
+  - engine
+  - tools
+  - agent-kit
+
+rulesets:
+  # Placeholder. The "oracle" status will be posted by the local oracle
+  # runner, using its own token that agents cannot read. Agents must never
+  # be able to post this status, or they could fake it.
+  # Kept disabled until the oracle runner exists; a required check that is
+  # never posted would block every merge. Switch to "active" in a PR that
+  # Ed approves once the runner is posting the status.
+  - name: oracle
+    target: branch
+    enforcement: disabled
+    bypass_actors:
+      - actor_id: null
+        actor_type: OrganizationAdmin
+        bypass_mode: always
+    conditions:
+      ref_name:
+        include: ["~DEFAULT_BRANCH"]
+        exclude: []
+    rules:
+      - type: required_status_checks
+        parameters:
+          strict_required_status_checks_policy: false
+          required_status_checks:
+            - context: oracle

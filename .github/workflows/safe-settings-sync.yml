@@ -1,0 +1,56 @@
+# Runs a safe-settings full sync from GitHub Actions, based on
+# github/safe-settings docs/github-action.md.
+#
+# DISABLED until Ed finishes docs/setup/safe-settings.md: manual
+# workflow_dispatch only, dry run by default. Add a schedule only after a
+# dry run has been reviewed.
+name: safe-settings sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (FULL_SYNC_NOP): report changes without applying them"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  safe-settings-sync:
+    runs-on: ubuntu-latest
+    env:
+      # Tag of github/safe-settings to run, and the commit it points to.
+      SAFE_SETTINGS_VERSION: "3.0.0"
+      SAFE_SETTINGS_CODE_DIR: ${{ github.workspace }}/.safe-settings-code
+    steps:
+      # Self-checkout of the admin repo (core) for the safe-settings config.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Checkout of safe-settings itself, pinned to the 3.0.0 commit.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          repository: github/safe-settings
+          ref: a9a1f366ad6a738b55682d346d94f8d6c4893b09  # 3.0.0
+          path: ${{ env.SAFE_SETTINGS_CODE_DIR }}
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
+
+      - run: npm install
+        working-directory: ${{ env.SAFE_SETTINGS_CODE_DIR }}
+
+      - run: npm run full-sync
+        working-directory: ${{ env.SAFE_SETTINGS_CODE_DIR }}
+        env:
+          GH_ORG: ${{ vars.SAFE_SETTINGS_GH_ORG }}
+          APP_ID: ${{ vars.SAFE_SETTINGS_APP_ID }}
+          PRIVATE_KEY: ${{ secrets.SAFE_SETTINGS_PRIVATE_KEY }}
+          GITHUB_CLIENT_ID: ${{ vars.SAFE_SETTINGS_GITHUB_CLIENT_ID }}
+          GITHUB_CLIENT_SECRET: ${{ secrets.SAFE_SETTINGS_GITHUB_CLIENT_SECRET }}
+          ADMIN_REPO: core
+          CONFIG_PATH: .github
+          FULL_SYNC_NOP: ${{ inputs.dry_run && 'true' || 'false' }}

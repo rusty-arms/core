@@ -1,0 +1,11 @@
+# safe-settings overrides for core, the admin repo (ADMIN_REPO=core).
+# core holds docs and config only: no code, no game data.
+
+repository:
+  description: >-
+    Rusty Arms coordination: research, decisions, clean-room policy, roadmap
+    and org settings as code. No game data.
+  topics:
+    - clean-room
+    - documentation
+    - safe-settings
