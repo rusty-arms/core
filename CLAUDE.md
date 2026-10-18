@@ -16,7 +16,7 @@ Full policy: [docs/clean-room.md](docs/clean-room.md).
 - **Never** read anything in the maintainer's lab folder (`~/ma-lab`), unless this session was started from inside it as an observer.
 - Exavolt has no licence: read its public docs for leads only, never copy its code. DJs_MA_TOOLs is MIT and may be reused with attribution.
 - If forbidden material appears anyway: stop, don't summarise or quote it, tell Ed, and add an incident line to [docs/provenance-log.md](docs/provenance-log.md).
-- **Never commit** retail game data, disc images, extracted files, screenshots or captures of the game, or anything from the lab. `scripts/check_no_retail.py` enforces this in the pre-commit hook and in CI.
+- **Never commit** retail game data, disc images, extracted files, screenshots or captures of the game, or anything from the lab. `scripts/check_no_retail.py` catches retail file types, MST archives, large files and lab paths in the pre-commit hook and in CI; it cannot spot screenshots, so that part is on you.
 - Don't use the original game's name in project names, repo names or logos. One factual compatibility line in a README is fine.
 - In committed files, describe forbidden material generically. Never name or link the leak-based repos.
 

@@ -31,7 +31,7 @@ The project reimplements the game from observation and public documentation only
 
 - The 2019 source leak in any form, including file listings and summaries of it.
 - Any port, fork, document, commit message or write-up built on the leak. This includes the 2026 AI-assisted PC ports.
-- Internet Archive copies of the source or of prototype discs.
+- Internet Archive copies of the source or of prototype discs. *(Project rule, stricter than the brief.)*
 - The community's PASM compiler. Its origin is unclear, so avoid every pipeline that depends on it.
 - Decompiler output of the retail executable.
 - The Dolphin HD texture pack for the game, which contains textures of unknown origin.

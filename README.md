@@ -1,6 +1,6 @@
 # Rusty Arms: core
 
-Rusty Arms is a clean-room reimplementation of a 2003 third-person action game, written in Rust. The engine loads the game's assets from the player's own disc. The first priorities are an online co-op campaign and remaster polish; new missions come after 1.0.
+Rusty Arms is a clean-room reimplementation of a 2003 GameCube, PS2 and Xbox game, with a Rust runtime and Python tools. The engine loads the game's assets from the player's own disc. The first priorities are an online co-op campaign and remaster polish; new missions come after 1.0.
 
 > Requires your own copy of *Metal Arms: Glitch in the System* (GameCube, NTSC-U, game ID GM5E7D).
 > This project is not affiliated with or endorsed by the game's rights holders.
@@ -40,4 +40,4 @@ Never commit retail game data, disc images, extracted files, or screenshots or c
 
 - Documentation: [CC BY 4.0](LICENSE).
 - Scripts and configuration (`scripts/`, `.githooks/`, `.github/`, `.claude/`, `docs/setup/*.py`, `docs/setup/*.json`): [MIT](LICENSE-CODE).
-- Future code repos (`engine`, `tools`, `agent-kit`): MIT OR Apache-2.0.
+- Future code repos (`engine`, `tools`, `agent-kit`): MIT OR Apache-2.0 (project choice, 2026-10-18).

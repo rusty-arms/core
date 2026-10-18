@@ -1,4 +1,4 @@
-# Retail data must never be committed. Mirrors scripts/check_no_retail.py.
+# Retail data must never be committed. Same extensions as scripts/check_no_retail.py, plus *.raw.
 *.iso
 *.gcm
 *.rvz
