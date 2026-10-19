@@ -25,6 +25,9 @@ jobs:
       - name: Retail-data guard
         run: python3 scripts/check_no_retail.py --all
 
+      - name: Markdown links
+        run: python3 scripts/check_links.py
+
       - name: YAML lint
         run: |
           python3 -m pip install --disable-pip-version-check yamllint==1.38.0

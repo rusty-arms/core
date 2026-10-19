@@ -11,7 +11,7 @@ Rules (see docs/clean-room.md and docs/media-policy.md):
   - file is larger than 5 MB;
   - path contains the lab folder's name.
 
-Do not weaken this script to make a check pass. Ed edits guard files himself.
+Do not weaken this script to make a check pass. Only the owner edits guard files.
 Standard library only.
 """
 
