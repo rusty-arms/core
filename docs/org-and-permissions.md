@@ -37,7 +37,9 @@ Only `core` exists so far. safe-settings configures repos that already exist, so
 
 | Identity | Access |
 |---|---|
-| **Developer** (Ed, `@edgorman`) | Org owner and the only bypass actor. |
+| **Owner** | Org owner. Member of the `admins` and `developers` teams. |
+| **`admins` team** | Admin on every repo, code owner for every repo (CODEOWNERS), and the only bypass actor. |
+| **`developers` team** | Push access. For people who write code; humans only. |
 | **Agents** | A dedicated GitHub App with write access to contents and pull requests on the code repos only. No access to `core`'s `.github/`, no admin rights. GitHub does not let you approve your own pull request, so agents need their own identity. |
 | **Oracle runner** | A separate local process with its own token, which agents cannot read. It posts the required `oracle` commit status. If agents could post it themselves, they could fake it. |
 | **safe-settings App** | Applies the settings in this repo. |
@@ -45,10 +47,10 @@ Only `core` exists so far. safe-settings configures repos that already exist, so
 ## Rules on `main` (every repo)
 
 - A pull request is required.
-- One approval is required from the developer, via CODEOWNERS (code-owner review), and stale approvals are dismissed on push.
+- One approval is required from the `admins` team, via CODEOWNERS (code-owner review), and stale approvals are dismissed on push.
 - The `guard` check must pass. Code repos will also require `oracle` once the oracle runner exists.
 - No force-pushes, no deletion.
-- No bypass except the developer (the ruleset uses the org-admin role; Ed is the only org owner).
+- No bypass except the `admins` team.
 
 ## CI
 

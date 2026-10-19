@@ -1,6 +1,6 @@
 # Setting up safe-settings
 
-Ed's manual steps. Based on the [github/safe-settings](https://github.com/github/safe-settings) README, `docs/deploy.md` and `docs/github-action.md` as of release 3.0.0 (checked 2026-10-18). Re-check those docs before you start; the project moves quickly.
+The owner's manual steps. Based on the [github/safe-settings](https://github.com/github/safe-settings) README, `docs/deploy.md` and `docs/github-action.md` as of release 3.0.0 (checked 2026-10-18). Re-check those docs before you start; the project moves quickly.
 
 safe-settings reads its config from this repo (`ADMIN_REPO=core`, `CONFIG_PATH=.github`): `.github/settings.yml`, `.github/suborgs/*.yml` and `.github/repos/*.yml`. It only configures repos that already exist.
 
@@ -79,6 +79,6 @@ Never put any of these in YAML. Delete the downloaded `.pem` once it is stored, 
 
 - `ADMIN_REPO=core` is set in the workflow.
 - By default safe-settings skips repos named `admin`, `.github` and `safe-settings`. When the org `.github` repo is created, either protect it by hand or add a `deployment-settings.yml` with `restrictedRepos` (see the safe-settings README, "Restricting safe-settings to specific repos").
-- Ed is the only bypass actor, via the `OrganizationAdmin` role. Keep Ed the only org owner, or switch the bypass actor to a specific user or team.
+- `settings.yml` defines two teams, `admins` and `developers`. safe-settings creates or updates them; add yourself to both in the org's **Teams** page. The `admins` team is the code owner and the only bypass actor, so keep its membership to people you trust with org settings, and never add the agents' App to it.
 - The `oracle` ruleset in `suborgs/clean-code.yml` is disabled until the oracle runner exists.
 - If you want protection on `core` before safe-settings runs, a single `gh api` call can create a matching ruleset; ask the agent for it.

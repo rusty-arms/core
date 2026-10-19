@@ -24,18 +24,25 @@ import os
 import sys
 
 HOME = os.path.expanduser("~")
-BLOCKLIST = os.environ.get("CLEANROOM_BLOCKLIST", os.path.join(HOME, ".claude", "cleanroom-blocklist.txt"))
+BLOCKLIST = os.environ.get(
+    "CLEANROOM_BLOCKLIST", os.path.join(HOME, ".claude", "cleanroom-blocklist.txt")
+)
 LAB = os.environ.get("CLEANROOM_LAB", "~/ma-lab")
 
 
 def block(reason):
-    print(f"cleanroom-guard: blocked: {reason}. See docs/clean-room.md; tell Ed.", file=sys.stderr)
+    print(
+        f"cleanroom-guard: blocked: {reason}. See docs/clean-room.md; tell the owner.",
+        file=sys.stderr,
+    )
     sys.exit(2)
 
 
 def load_terms(path):
     with open(path, encoding="utf-8") as f:
-        return [t.strip().lower() for t in f if t.strip() and not t.lstrip().startswith("#")]
+        return [
+            t.strip().lower() for t in f if t.strip() and not t.lstrip().startswith("#")
+        ]
 
 
 def inside(path, root):
@@ -63,10 +70,15 @@ def main():
     lab_raw = LAB.rstrip("/").lower()
     lab_abs = os.path.expanduser(LAB).rstrip("/")
     lab_name = os.path.basename(lab_abs).lower()
-    # Raw form (~/ma-lab), expanded form (/home/ed/ma-lab), $HOME forms, and
+    # Raw form (~/ma-lab), expanded form (/home/you/ma-lab), $HOME forms, and
     # the folder name itself so relative paths like ../ma-lab are caught too.
-    lab_forms = {lab_raw, lab_abs.lower(), lab_name,
-                 lab_raw.replace("~", "$home", 1), lab_raw.replace("~", "${home}", 1)}
+    lab_forms = {
+        lab_raw,
+        lab_abs.lower(),
+        lab_name,
+        lab_raw.replace("~", "$home", 1),
+        lab_raw.replace("~", "${home}", 1),
+    }
     if any(form and form in text for form in lab_forms):
         cwd = data.get("cwd") or ""
         if not (cwd and inside(cwd, lab_abs)):

@@ -1,7 +1,7 @@
 # Runs a safe-settings full sync from GitHub Actions, based on
 # github/safe-settings docs/github-action.md.
 #
-# DISABLED until Ed finishes docs/setup/safe-settings.md: manual
+# DISABLED until the owner finishes docs/setup/safe-settings.md: manual
 # workflow_dispatch only, dry run by default. Add a schedule only after a
 # dry run has been reviewed.
 name: safe-settings sync

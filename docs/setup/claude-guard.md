@@ -1,4 +1,4 @@
-# User-level clean-room guard (Ed's PC)
+# User-level clean-room guard (owner's PC)
 
 These guard rails protect every Claude Code session on the developer's PC, so they live in `~/.claude/`, not in any repo. This folder holds the finished files; install them by hand. The blocklist terms themselves are **not** committed anywhere, because they name material the project must never touch.
 
@@ -59,7 +59,7 @@ Why the lab is blocked by the hook and not by a deny rule: deny rules beat allow
 
 ## 4. Test it
 
-Run these from the repo root after installing (adjust `/home/ed`):
+Run these from the repo root after installing (adjust `/home/you`):
 
 ```sh
 G=~/.claude/hooks/cleanroom-guard.py

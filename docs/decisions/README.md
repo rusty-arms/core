@@ -1,6 +1,6 @@
 # Decisions
 
-One record per decision. Changes here need Ed's approval (see CODEOWNERS).
+One record per decision. Changes here need the owner's approval (see CODEOWNERS).
 
 | ADR | Decision |
 |---|---|

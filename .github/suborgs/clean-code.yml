@@ -13,13 +13,13 @@ rulesets:
   # be able to post this status, or they could fake it.
   # Kept disabled until the oracle runner exists; a required check that is
   # never posted would block every merge. Switch to "active" in a PR that
-  # Ed approves once the runner is posting the status.
+  # an admin approves once the runner is posting the status.
   - name: oracle
     target: branch
     enforcement: disabled
     bypass_actors:
-      - actor_id: null
-        actor_type: OrganizationAdmin
+      - name: admins
+        actor_type: Team
         bypass_mode: always
     conditions:
       ref_name:

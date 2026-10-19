@@ -16,7 +16,7 @@ The durations come from the research and assume heavier agent use than the Claud
 ## Phase 0 breakdown
 
 1. `core` repo (this repo).
-2. `agent-kit`: a Claude Code plugin holding the guard hook, the reviewer and chores subagents, and the session-discipline rules.
+2. `agent-kit`: a Claude Code plugin holding the guard hook, the reviewer subagent, the format/lint hook, and the session-discipline rules.
 3. `specs` skeleton.
 4. Lab setup (local only).
 5. Dolphin oracle rig: scripted input replay producing a RAM trace and screenshots.

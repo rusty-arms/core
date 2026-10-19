@@ -7,7 +7,22 @@
       "Edit(~/ma-lab/**)",
       "Edit(/.githooks/**)",
       "Edit(/scripts/check_no_retail.py)",
-      "Edit(/.github/workflows/guard.yml)"
+      "Edit(/.github/workflows/guard.yml)",
+      "Edit(/.claude/hooks/**)",
+      "Edit(/scripts/check_links.py)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/format-lint.py"
+          }
+        ]
+      }
     ]
   }
 }

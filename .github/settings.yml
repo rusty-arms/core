@@ -43,17 +43,28 @@ labels:
       description: Remaster polish (HD, widescreen, frame rate, controls)
     - name: needs-ed
       color: "#D93F0B"
-      description: Needs a decision or review from Ed
+      description: Needs a decision or review from the owner
+
+# Teams. admins: the owner and anyone trusted with org settings; code owner
+# for every repo. developers: people who push code. The agents' GitHub App is
+# not a member of either team.
+teams:
+  - name: admins
+    permission: admin
+    visibility: closed
+  - name: developers
+    permission: push
+    visibility: closed
 
 rulesets:
   - name: main
     target: branch
     enforcement: active
-    # Only Ed may bypass. Ed is the only org owner, so the OrganizationAdmin
-    # actor means "Ed" here. Never add the agents' GitHub App as a bypass actor.
+    # Only the admins team may bypass. Never add the agents' GitHub App, or
+    # any team it belongs to, as a bypass actor.
     bypass_actors:
-      - actor_id: null
-        actor_type: OrganizationAdmin
+      - name: admins
+        actor_type: Team
         bypass_mode: always
     conditions:
       ref_name:
