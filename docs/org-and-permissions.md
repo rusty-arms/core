@@ -30,7 +30,7 @@ Only `core` exists so far. safe-settings configures repos that already exist, so
 ## GitHub Free limits
 
 - Rulesets work only on public repos on GitHub Free, so every repo stays public, `core` included.
-- Org-wide rulesets need the Team plan. safe-settings works around this by writing the same ruleset into each repo.
+- Org-wide rulesets need the Team plan. safe-settings works around this by writing the same ruleset into each repo. In practice that means the `main` ruleset must not go in `.github/settings.yml`, which safe-settings applies as an organization ruleset (the first dry run failed with "Upgrade to GitHub Team"). It is repeated in `suborgs/clean-code.yml` and `repos/core.yml` instead, and every new repo needs it in one of those files.
 - Secrets go in Actions secrets, never in the YAML.
 
 ## Identities
