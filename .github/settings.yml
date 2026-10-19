@@ -1,0 +1,88 @@
+# safe-settings: org-wide defaults for every repo in the rusty-arms org.
+# Syntax follows github/safe-settings docs/sample-settings/settings.yml
+# (checked against safe-settings 3.0.0, 2026-10-18).
+#
+# - On GitHub Free, rulesets apply only to PUBLIC repos, so every repo in
+#   this org stays public. A private repo would silently lose its ruleset.
+# - Secrets never go in this YAML (or any YAML in this repo). Use Actions
+#   secrets and variables.
+# - safe-settings only configures repos that already exist. Create a repo
+#   first, then add it here (or to a suborg) in a PR.
+# - Precedence: .github/repos/*.yml > .github/suborgs/*.yml > this file.
+
+repository:
+  private: false
+  visibility: public
+  has_issues: true
+  has_projects: false
+  has_wiki: false
+  default_branch: main
+  allow_squash_merge: true
+  allow_merge_commit: false
+  allow_rebase_merge: false
+  allow_auto_merge: false
+  delete_branch_on_merge: true
+  allow_update_branch: true
+
+labels:
+  include:
+    - name: clean-room
+      color: "#B60205"
+      description: Touches the clean-room policy or wall
+    - name: spec
+      color: "#1D76DB"
+      description: Format or behaviour spec work
+    - name: oracle
+      color: "#5319E7"
+      description: Dolphin oracle, golden traces or the oracle check
+    - name: co-op
+      color: "#0E8A16"
+      description: Online or local co-op
+    - name: remaster
+      color: "#FBCA04"
+      description: Remaster polish (HD, widescreen, frame rate, controls)
+    - name: needs-ed
+      color: "#D93F0B"
+      description: Needs a decision or review from the owner
+
+# Teams. admins: the owner and anyone trusted with org settings; code owner
+# for every repo. developers: people who push code. The agents' GitHub App is
+# not a member of either team.
+teams:
+  - name: admins
+    permission: admin
+    visibility: closed
+  - name: developers
+    permission: push
+    visibility: closed
+
+rulesets:
+  - name: main
+    target: branch
+    enforcement: active
+    # Only the admins team may bypass. Never add the agents' GitHub App, or
+    # any team it belongs to, as a bypass actor.
+    bypass_actors:
+      - name: admins
+        actor_type: Team
+        bypass_mode: always
+    conditions:
+      ref_name:
+        include: ["~DEFAULT_BRANCH"]
+        exclude: []
+    rules:
+      - type: deletion
+      - type: non_fast_forward
+      - type: pull_request
+        parameters:
+          required_approving_review_count: 1
+          require_code_owner_review: true
+          dismiss_stale_reviews_on_push: true
+          require_last_push_approval: false
+          required_review_thread_resolution: false
+      - type: required_status_checks
+        parameters:
+          strict_required_status_checks_policy: false
+          required_status_checks:
+            # Posted by .github/workflows/guard.yml (job name "guard").
+            - context: guard
