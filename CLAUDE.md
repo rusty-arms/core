@@ -51,7 +51,8 @@ The one subagent for this repo is `.claude/agents/reviewer.md` (read-only, Sonne
 - `docs/research/brief.md`: the research brief, unchanged.
 - `docs/decisions/`: one ADR per decision D1–D9.
 - `docs/`: policies, roadmap, provenance log, agent workflow.
-- `docs/setup/`: the owner's manual setup steps, plus the user-level guard hook to install on the owner's PC.
+- `docs/setup/`: the owner's manual setup steps.
+- `scripts/cleanroom-guard.py`: the clean-room `PreToolUse` hook. It reads a local blocklist that is never committed. If it blocks a call, stop and report it.
 - `.github/settings.yml`, `.github/suborgs/`, `.github/repos/`: safe-settings config (`ADMIN_REPO=core`).
 - `scripts/check_no_retail.py`: the retail-data guard. Run `python3 scripts/check_no_retail.py --all` before pushing.
 

@@ -1,73 +1,48 @@
-# User-level clean-room guard (owner's PC)
+# Clean-room guard
 
-These guard rails protect every Claude Code session on the developer's PC, so they live in `~/.claude/`, not in any repo. This folder holds the finished files; install them by hand. The blocklist terms themselves are **not** committed anywhere, because they name material the project must never touch.
+The clean-room guard is a Claude Code `PreToolUse` hook that blocks tool calls touching forbidden material or the lab. It lives in the repo, not in your home folder: [`scripts/cleanroom-guard.py`](../../scripts/cleanroom-guard.py), registered in [`.claude/settings.json`](../../.claude/settings.json). Every Claude Code session started inside this repo runs it. When the `agent-kit` plugin exists, it will ship the same hook to every project repo.
 
-Later these move into the `agent-kit` plugin.
+The only thing that stays outside the repo is the **blocklist**, because it names the material the project must never touch and must never be committed.
 
-## 1. Blocklist
+## What it does
 
-Create `~/.claude/cleanroom-blocklist.txt` with one lower-case term per line. Use the terms from your local handover notes (the leak-based repo owners and names, the PASM compiler, the leak archive's file name). Add more any time; `#` starts a comment.
+- Reads the hook's JSON from stdin and flattens `tool_input` into one lower-case string.
+- Exits 2 (blocking the call, with a reason on stderr) if any blocklist term appears.
+- Exits 2 if the input touches the lab (`~/ma-lab`, its expanded path, `$HOME` forms, or the bare folder name, which also catches relative paths), **unless** the hook input's `cwd` is inside the lab, so observer sessions started from the lab can work there.
+- Guards `WebFetch`, `WebSearch`, `Bash`, `Read`, `Grep` and `Glob`. `Edit` and `Write` are not guarded, so docs can still mention the lab path.
+- With no blocklist terms it fails closed and blocks every guarded call. The exception is Claude Code cloud sessions, which only get a warning so they aren't locked out before their environment is configured.
+
+The project settings also deny `WebFetch(domain:archive.org)` and reads of `~/ma-lab/**`, and stop agents editing the guard script.
+
+Limitation: the guard only runs in sessions started inside a repo that has it. A Claude session started in your home folder or a new empty folder is unguarded, so start sessions from a project repo.
+
+## 1. Create the blocklist on your PC
+
+Create `~/.claude/cleanroom-blocklist.txt` with one lower-case term per line: the leak-based repo owners and names, the PASM compiler, and the leak archive's file name, as listed in your local handover notes. Add more any time; `#` starts a comment.
 
 ```sh
+mkdir -p ~/.claude
 $EDITOR ~/.claude/cleanroom-blocklist.txt
 chmod 600 ~/.claude/cleanroom-blocklist.txt
 ```
 
-## 2. Guard hook
+## 2. Cloud environments
+
+Claude Code cloud sessions have no home-folder blocklist. In the cloud environment's settings, add an environment variable `CLEANROOM_BLOCKLIST_TERMS` with the same terms, comma-separated. Until it is set, cloud sessions run with a warning instead of the term check; the lab check still applies.
+
+## 3. Test it
+
+From the repo root, after creating the blocklist:
 
 ```sh
-mkdir -p ~/.claude/hooks
-cp docs/setup/cleanroom-guard.py ~/.claude/hooks/cleanroom-guard.py
-chmod +x ~/.claude/hooks/cleanroom-guard.py
+G=scripts/cleanroom-guard.py
+T=$(grep -v '^#' ~/.claude/cleanroom-blocklist.txt | head -1)
+echo "{\"cwd\":\"$PWD\",\"tool_input\":{\"url\":\"https://example.com/$T\"}}" | python3 $G; echo "expect 2: $?"
+echo "{\"cwd\":\"$PWD\",\"tool_input\":{\"url\":\"https://docs.github.com/\"}}" | python3 $G; echo "expect 0: $?"
+echo "{\"cwd\":\"$PWD\",\"tool_input\":{\"file_path\":\"$HOME/ma-lab/x\"}}" | python3 $G; echo "expect 2: $?"
+echo "{\"cwd\":\"$HOME/ma-lab\",\"tool_input\":{\"file_path\":\"$HOME/ma-lab/x\"}}" | python3 $G; echo "expect 0: $?"
 ```
 
-What it does ([source](cleanroom-guard.py)):
+These cases, plus the environment-variable, fail-closed and cloud-warning cases, passed in the cloud session that wrote the script, using a temporary blocklist and lab path.
 
-- reads the hook's JSON from stdin and flattens `tool_input` into one lower-case string;
-- exits 2 (blocking the call, with a reason on stderr) if any blocklist term appears;
-- exits 2 if the input touches the lab (`~/ma-lab`, its expanded path, `$HOME` forms, or the bare folder name, which also catches relative paths), **unless** the hook input's `cwd` is inside the lab, so observer sessions started from the lab can work there;
-- fails closed: if the blocklist is missing, every guarded call is blocked;
-- otherwise exits 0.
-
-The Claude Code hooks guide confirms every hook input includes `cwd` (checked 2026-10-18).
-
-Side effect: a Bash or Grep call whose arguments contain a blocklist term (for example a `grep` for the compiler's name) is blocked too. That is intended.
-
-## 3. Merge into `~/.claude/settings.json`
-
-Merge [claude-user-settings.json](claude-user-settings.json) into your existing `~/.claude/settings.json`: append the `PreToolUse` entry to any existing `hooks.PreToolUse` list, and append the deny rule to any existing `permissions.deny` list. Don't replace the file. The diff, for an empty or hook-less file:
-
-```diff
- {
-+  "hooks": {
-+    "PreToolUse": [
-+      {
-+        "matcher": "WebFetch|WebSearch|Bash|Read|Grep|Glob",
-+        "hooks": [
-+          { "type": "command", "command": "python3 \"$HOME/.claude/hooks/cleanroom-guard.py\"" }
-+        ]
-+      }
-+    ]
-+  },
-+  "permissions": {
-+    "deny": ["WebFetch(domain:archive.org)"]
-+  }
- }
-```
-
-Why the lab is blocked by the hook and not by a deny rule: deny rules beat allow rules in every settings scope, so a user-level deny on the lab would also lock out future observer sessions. The hook's `cwd` exception allows them.
-
-## 4. Test it
-
-Run these from the repo root after installing (adjust `/home/you`):
-
-```sh
-G=~/.claude/hooks/cleanroom-guard.py
-T=$(head -1 ~/.claude/cleanroom-blocklist.txt)
-echo "{\"cwd\":\"$PWD\",\"tool_name\":\"WebFetch\",\"tool_input\":{\"url\":\"https://example.com/$T\"}}" | $G; echo "expect 2: $?"
-echo "{\"cwd\":\"$PWD\",\"tool_name\":\"WebFetch\",\"tool_input\":{\"url\":\"https://docs.github.com/\"}}" | $G; echo "expect 0: $?"
-echo "{\"cwd\":\"$PWD\",\"tool_name\":\"Read\",\"tool_input\":{\"file_path\":\"$HOME/ma-lab/x\"}}" | $G; echo "expect 2: $?"
-echo "{\"cwd\":\"$HOME/ma-lab\",\"tool_name\":\"Read\",\"tool_input\":{\"file_path\":\"$HOME/ma-lab/x\"}}" | $G; echo "expect 0: $?"
-```
-
-These four cases passed in the cloud session that wrote the script, using a temporary blocklist and lab path.
+Side effect: a Bash or Grep call whose arguments contain a blocklist term or the lab folder's name is blocked too. That is intended.

@@ -32,9 +32,10 @@ Source: [research brief](research/brief.md) §10.
 - Verifiers, golden traces and the feature list must not be edited by the worker. Enforce this with hooks: a `PreToolUse` hook that exits with code 2 blocks the action and returns a reason.
 - Expect agents to try to route around blocks.
 - Use a **read-only reviewer subagent** that judges work against the oracle, never against the worker's own explanation. In this repo: [`.claude/agents/reviewer.md`](../.claude/agents/reviewer.md).
-- Two layers of guard rails exist:
-  - **User-level, on the developer's PC** (never committed in full): a clean-room blocklist and a `PreToolUse` guard hook. See [setup/claude-guard.md](setup/claude-guard.md).
-  - **Project-level**, committed: `.claude/settings.json` deny rules, `scripts/check_no_retail.py`, the pre-commit hook and the `guard` CI workflow.
+- Guard rails, all committed in the repo except the blocklist:
+  - the clean-room `PreToolUse` guard hook (`scripts/cleanroom-guard.py`), which reads a local blocklist that is never committed ([setup/claude-guard.md](setup/claude-guard.md));
+  - the `PostToolUse` format/lint hook;
+  - `.claude/settings.json` deny rules, `scripts/check_no_retail.py`, `scripts/check_links.py`, the pre-commit hook and the `guard` CI workflow.
 - These move into the `agent-kit` plugin in the next Phase 0 step.
 
 ## Unattended runs

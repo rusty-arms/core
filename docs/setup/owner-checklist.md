@@ -2,7 +2,7 @@
 
 Manual tasks that an agent can't or mustn't do, in order. Tick them off in a PR or tell the next session.
 
-- [ ] **0. Install the user-level clean-room guard on your PC** ([claude-guard.md](claude-guard.md)): the blocklist, the guard hook, and the `~/.claude/settings.json` merge. Run its four tests. Do this before any other Claude Code session on the PC.
+- [ ] **0. Blocklist:** create `~/.claude/cleanroom-blocklist.txt` and run the guard's tests ([claude-guard.md](claude-guard.md)). The guard hook itself is already in the repo. For cloud sessions, also set `CLEANROOM_BLOCKLIST_TERMS` in the cloud environment's settings.
 - [ ] **1. Teams:** in the org's **Teams** page, create `admins` and `developers` and add yourself to both. CODEOWNERS and the `main` ruleset's bypass point at `@rusty-arms/admins`; safe-settings then gives the teams their repo permissions.
 - [ ] **2. safe-settings:** create the safe-settings GitHub App, install it on the org, and deploy it, per [safe-settings.md](safe-settings.md). Dry run first.
 - [ ] **3. Agents' GitHub App:** create a second GitHub App for the agents:

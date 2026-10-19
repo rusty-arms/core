@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Claude Code PreToolUse hook: the clean-room guard.
 
-Install on the developer's PC as ~/.claude/hooks/cleanroom-guard.py (see
-docs/setup/claude-guard.md). Never commit the blocklist it reads.
+Registered in this repo's .claude/settings.json (and, later, shipped by the
+agent-kit plugin to every project repo). See docs/setup/claude-guard.md.
 
 - Reads the hook input JSON from stdin.
 - Flattens tool_input into one lower-case string.
@@ -11,9 +11,14 @@ docs/setup/claude-guard.md). Never commit the blocklist it reads.
   inside the lab (observer sessions run from there).
 - Otherwise exits 0.
 
-The blocklist is ~/.claude/cleanroom-blocklist.txt: one lower-case term per
-line, '#' for comments. If it is missing or unreadable, every guarded call
-is blocked (fail closed).
+The blocklist terms are never committed. They come from, in order:
+  1. ~/.claude/cleanroom-blocklist.txt (one lower-case term per line,
+     '#' for comments) on the owner's PC;
+  2. the CLEANROOM_BLOCKLIST_TERMS environment variable (comma-separated),
+     for cloud environments.
+With no terms at all, every guarded call is blocked (fail closed), except in
+a Claude Code cloud session (CLAUDE_CODE_REMOTE set), which only gets a
+warning so it is not locked out before its environment is configured.
 
 Environment overrides (for testing): CLEANROOM_BLOCKLIST, CLEANROOM_LAB.
 Standard library only.
@@ -38,11 +43,16 @@ def block(reason):
     sys.exit(2)
 
 
-def load_terms(path):
-    with open(path, encoding="utf-8") as f:
-        return [
-            t.strip().lower() for t in f if t.strip() and not t.lstrip().startswith("#")
-        ]
+def load_terms():
+    terms = []
+    try:
+        with open(BLOCKLIST, encoding="utf-8") as f:
+            terms += [t.strip().lower() for t in f if t.strip() and not t.lstrip().startswith("#")]
+    except OSError:
+        pass
+    env_terms = os.environ.get("CLEANROOM_BLOCKLIST_TERMS", "")
+    terms += [t.strip().lower() for t in env_terms.split(",") if t.strip()]
+    return terms
 
 
 def inside(path, root):
@@ -58,10 +68,16 @@ def main():
 
     text = json.dumps(data.get("tool_input", {}), ensure_ascii=False).lower()
 
-    try:
-        terms = load_terms(BLOCKLIST)
-    except OSError:
-        block(f"blocklist {BLOCKLIST} is missing or unreadable")
+    terms = load_terms()
+    if not terms:
+        if os.environ.get("CLAUDE_CODE_REMOTE"):
+            print(
+                "cleanroom-guard: warning: no blocklist terms; set CLEANROOM_BLOCKLIST_TERMS "
+                "in this cloud environment. See docs/setup/claude-guard.md.",
+                file=sys.stderr,
+            )
+        else:
+            block(f"no blocklist terms ({BLOCKLIST} missing and CLEANROOM_BLOCKLIST_TERMS unset)")
 
     for term in terms:
         if term in text:
@@ -70,8 +86,8 @@ def main():
     lab_raw = LAB.rstrip("/").lower()
     lab_abs = os.path.expanduser(LAB).rstrip("/")
     lab_name = os.path.basename(lab_abs).lower()
-    # Raw form (~/ma-lab), expanded form (/home/you/ma-lab), $HOME forms, and
-    # the folder name itself so relative paths like ../ma-lab are caught too.
+    # Raw form (~/ma-lab), expanded form, $HOME forms, and the folder name
+    # itself so relative paths like ../ma-lab are caught too.
     lab_forms = {
         lab_raw,
         lab_abs.lower(),

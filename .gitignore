@@ -27,3 +27,4 @@ HANDOVER.md
 .claude/settings.local.json
 __pycache__/
 .venv/
+.ruff_cache/
