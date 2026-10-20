@@ -44,6 +44,10 @@ labels:
     - name: needs-ed
       color: "#D93F0B"
       description: Needs a decision or review from the owner
+  # safe-settings deletes labels that are not listed above. Keep GitHub's
+  # default labels.
+  exclude:
+    - name: "^(bug|documentation|duplicate|enhancement|good first issue|help wanted|invalid|question|wontfix)$"
 
 # Teams. admins: the owner and anyone trusted with org settings; code owner
 # for every repo. developers: people who push code. The agents' GitHub App is
