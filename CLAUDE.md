@@ -13,7 +13,7 @@ The source of truth is [docs/research/brief.md](docs/research/brief.md). Do not 
 Full policy: [docs/clean-room.md](docs/clean-room.md).
 
 - **Never** access, search for, fetch, clone or read: the 2019 source leak or any port, fork or document built on it; the community's PASM compiler; Internet Archive copies of the source or prototype discs; the Dolphin HD texture pack for the game; decompiler output of the retail executable.
-- **Never** read anything in the maintainer's lab folder (`~/ma-lab`), unless this session was started from inside it as an observer.
+- **Never** read anything in the maintainer's lab folder (`~/Develop/rusty-arms/ma-lab`), unless this session was started from inside it as an observer.
 - Exavolt has no licence: read its public docs for leads only, never copy its code. DJs_MA_TOOLs is MIT and may be reused with attribution.
 - If forbidden material appears anyway: stop, don't summarise or quote it, tell the owner, and add an incident line to [docs/provenance-log.md](docs/provenance-log.md).
 - **Never commit** retail game data, disc images, extracted files, screenshots or captures of the game, or anything from the lab. `scripts/check_no_retail.py` catches retail file types, MST archives, large files and lab paths in the pre-commit hook and in CI; it cannot spot screenshots, so that part is on you.

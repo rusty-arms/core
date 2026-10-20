@@ -60,4 +60,4 @@ Only `core` exists so far. safe-settings configures repos that already exist, so
 
 ## The lab
 
-The lab (`~/ma-lab`) holds the disc image, extracted files, Dolphin captures and golden traces. It is a local-only git repo with an offline backup, and it is never pushed anywhere. All of it is derived from retail data, so a takedown or account strike would hit the whole org.
+The lab (`~/Develop/rusty-arms/ma-lab`) holds the disc image, extracted files, Dolphin captures and golden traces. It is a local-only git repo with an offline backup, and it is never pushed anywhere. All of it is derived from retail data, so a takedown or account strike would hit the whole org.

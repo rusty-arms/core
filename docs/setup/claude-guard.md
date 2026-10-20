@@ -8,11 +8,11 @@ The only thing that stays outside the repo is the **blocklist**, because it name
 
 - Reads the hook's JSON from stdin and flattens `tool_input` into one lower-case string.
 - Exits 2 (blocking the call, with a reason on stderr) if any blocklist term appears.
-- Exits 2 if the input touches the lab (`~/ma-lab`, its expanded path, `$HOME` forms, or the bare folder name, which also catches relative paths), **unless** the hook input's `cwd` is inside the lab, so observer sessions started from the lab can work there.
+- Exits 2 if the input touches the lab (`~/Develop/rusty-arms/ma-lab`, its expanded path, `$HOME` forms, or the bare folder name, which also catches relative paths), **unless** the hook input's `cwd` is inside the lab, so observer sessions started from the lab can work there.
 - Guards `WebFetch`, `WebSearch`, `Bash`, `Read`, `Grep` and `Glob`. `Edit` and `Write` are not guarded, so docs can still mention the lab path.
 - With no blocklist terms it fails closed and blocks every guarded call. The exception is Claude Code cloud sessions, which only get a warning so they aren't locked out before their environment is configured.
 
-The project settings also deny `WebFetch(domain:archive.org)` and reads of `~/ma-lab/**`, and stop agents editing the guard script.
+The project settings also deny `WebFetch(domain:archive.org)` and reads of `~/Develop/rusty-arms/ma-lab/**`, and stop agents editing the guard script.
 
 Limitation: the guard only runs in sessions started inside a repo that has it. A Claude session started in your home folder or a new empty folder is unguarded, so start sessions from a project repo.
 
@@ -39,8 +39,9 @@ G=scripts/cleanroom-guard.py
 T=$(grep -v '^#' ~/.claude/cleanroom-blocklist.txt | head -1)
 echo "{\"cwd\":\"$PWD\",\"tool_input\":{\"url\":\"https://example.com/$T\"}}" | python3 $G; echo "expect 2: $?"
 echo "{\"cwd\":\"$PWD\",\"tool_input\":{\"url\":\"https://docs.github.com/\"}}" | python3 $G; echo "expect 0: $?"
-echo "{\"cwd\":\"$PWD\",\"tool_input\":{\"file_path\":\"$HOME/ma-lab/x\"}}" | python3 $G; echo "expect 2: $?"
-echo "{\"cwd\":\"$HOME/ma-lab\",\"tool_input\":{\"file_path\":\"$HOME/ma-lab/x\"}}" | python3 $G; echo "expect 0: $?"
+L=$HOME/Develop/rusty-arms/ma-lab
+echo "{\"cwd\":\"$PWD\",\"tool_input\":{\"file_path\":\"$L/x\"}}" | python3 $G; echo "expect 2: $?"
+echo "{\"cwd\":\"$L\",\"tool_input\":{\"file_path\":\"$L/x\"}}" | python3 $G; echo "expect 0: $?"
 ```
 
 These cases, plus the environment-variable, fail-closed and cloud-warning cases, passed in the cloud session that wrote the script, using a temporary blocklist and lab path.

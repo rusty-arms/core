@@ -62,8 +62,8 @@ The lab is the only place allowed to hold retail data or anything derived from i
 - [ ] Create the folders and a local-only git repo. Never add a remote.
 
   ```sh
-  mkdir -p ~/ma-lab/{disc,extracted,captures,inputs,traces,notes}
-  cd ~/ma-lab
+  mkdir -p ~/Develop/rusty-arms/ma-lab/{disc,extracted,captures,inputs,traces,notes}
+  cd ~/Develop/rusty-arms/ma-lab
   git init
   printf 'disc/\nextracted/\ncaptures/\n' > .gitignore
   git add .gitignore && git commit -m "Lab layout"
@@ -83,13 +83,13 @@ The lab is the only place allowed to hold retail data or anything derived from i
 - [ ] **Back it up offline.** Copy the whole folder, including the untracked parts, to an external drive, and do it again after every capture session:
 
   ```sh
-  rsync -a --delete ~/ma-lab/ /path/to/external-drive/ma-lab/
+  rsync -a --delete ~/Develop/rusty-arms/ma-lab/ /path/to/external-drive/ma-lab/
   ```
 
   Don't keep the lab in a cloud-synced folder such as Dropbox, OneDrive or Google Drive. That puts retail data on someone else's servers.
 
 - [ ] **How the lab is used:**
-  - Only observer sessions work in the lab, and they are started from inside it (`cd ~/ma-lab && claude`). The guard lets a session read the lab only when it starts there.
+  - Only observer sessions work in the lab, and they are started from inside it (`cd ~/Develop/rusty-arms/ma-lab && claude`). The guard lets a session read the lab only when it starts there.
   - Observers write what they learn as specs, in their own words, in the `specs` repo, and log each fact in the [provenance log](../provenance-log.md).
   - Implementer sessions never open the lab.
 
@@ -97,9 +97,9 @@ The lab is the only place allowed to hold retail data or anything derived from i
 
 Needed before: anything that reads the disc.
 
-- [ ] Install Dolphin and add `~/ma-lab/disc/` as a game folder.
+- [ ] Install Dolphin and add `~/Develop/rusty-arms/ma-lab/disc/` as a game folder.
 - [ ] Open the game's **Properties → Verify** tab and run it. It compares the image's hashes with the Redump database.
-- [ ] Save the result and the hashes it shows in `~/ma-lab/disc/hashes.txt`.
+- [ ] Save the result and the hashes it shows in `~/Develop/rusty-arms/ma-lab/disc/hashes.txt`.
 - [ ] Add a dated line to the [provenance log](../provenance-log.md) saying the reference disc was verified. Never upload the image anywhere.
 - [ ] Set Dolphin's internal resolution to 1x. Dolphin's wiki recommends this to avoid cutscene problems.
 
