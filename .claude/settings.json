@@ -3,8 +3,8 @@
   "permissions": {
     "deny": [
       "WebFetch(domain:archive.org)",
-      "Read(~/ma-lab/**)",
-      "Edit(~/ma-lab/**)",
+      "Read(~/Develop/rusty-arms/ma-lab/**)",
+      "Edit(~/Develop/rusty-arms/ma-lab/**)",
       "Edit(/.githooks/**)",
       "Edit(/scripts/check_no_retail.py)",
       "Edit(/.github/workflows/guard.yml)",

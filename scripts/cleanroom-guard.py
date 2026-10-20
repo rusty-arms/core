@@ -32,7 +32,7 @@ HOME = os.path.expanduser("~")
 BLOCKLIST = os.environ.get(
     "CLEANROOM_BLOCKLIST", os.path.join(HOME, ".claude", "cleanroom-blocklist.txt")
 )
-LAB = os.environ.get("CLEANROOM_LAB", "~/ma-lab")
+LAB = os.environ.get("CLEANROOM_LAB", "~/Develop/rusty-arms/ma-lab")
 
 
 def block(reason):
