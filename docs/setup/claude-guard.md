@@ -1,6 +1,6 @@
 # Clean-room guard
 
-The clean-room guard is a Claude Code `PreToolUse` hook that blocks tool calls touching forbidden material or the lab. It lives in the repo, not in your home folder: [`scripts/cleanroom-guard.py`](../../scripts/cleanroom-guard.py), registered in [`.claude/settings.json`](../../.claude/settings.json). Every Claude Code session started inside this repo runs it. When the `agent-kit` plugin exists, it will ship the same hook to every project repo.
+The clean-room guard is a Claude Code `PreToolUse` hook that blocks tool calls touching forbidden material or the lab. It lives in the repo, not in your home folder: [`scripts/cleanroom-guard.py`](../../scripts/cleanroom-guard.py), registered in [`.claude/settings.json`](../../.claude/settings.json). Every Claude Code session started inside this repo runs it. The [`agent-kit` plugin](https://github.com/rusty-arms/agent-kit) ships a stricter version of the hook to every session once installed for your user; it also checks writes and MCP tool calls for blocklist terms.
 
 The only thing that stays outside the repo is the **blocklist**, because it names the material the project must never touch and must never be committed.
 
@@ -14,7 +14,7 @@ The only thing that stays outside the repo is the **blocklist**, because it name
 
 The project settings also deny `WebFetch(domain:archive.org)` and reads of `~/Develop/rusty-arms/ma-lab/**`, and stop agents editing the guard script.
 
-Limitation: the guard only runs in sessions started inside a repo that has it. A Claude session started in your home folder or a new empty folder is unguarded, so start sessions from a project repo.
+Limitation: without the plugin, the guard only runs in sessions started inside a repo that has it. Install the plugin for your user so that sessions started anywhere are guarded.
 
 ## 1. Create the blocklist on your PC
 
