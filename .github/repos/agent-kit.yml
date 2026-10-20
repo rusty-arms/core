@@ -1,0 +1,11 @@
+# safe-settings overrides for agent-kit. Its rulesets come from
+# suborgs/clean-code.yml; this file only sets the description and topics.
+
+repository:
+  description: >-
+    Rusty Arms Claude Code plugin: clean-room guard hooks, the reviewer
+    subagent and loop scripts shared by every project repo.
+  topics:
+    - claude-code
+    - clean-room
+    - claude-code-plugin

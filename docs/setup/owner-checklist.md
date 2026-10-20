@@ -48,6 +48,7 @@ Create `agent-kit` and `specs` now. Leave `engine` and `tools` until Phase 1 nee
   2. Run it again with **Dry run** unticked.
 
   Both repos are already listed in [`clean-code.yml`](../../.github/suborgs/clean-code.yml).
+- [ ] **Give it a description and topics:** add `.github/repos/<name>.yml` in a `core` PR, copying [`repos/agent-kit.yml`](../../.github/repos/agent-kit.yml). Merging it runs the sync. `agent-kit` and `specs` already have one.
 - [ ] **Add it to the Claude project's repositories,** so that cloud sessions can clone it and push to it.
 
 The `main` ruleset requires the `guard` check, which a new repo doesn't have until its first PR adds it. Merge that first PR with your `admins` bypass.

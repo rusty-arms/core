@@ -22,7 +22,7 @@ Only `core` exists so far. safe-settings configures repos that already exist, so
 - [github/safe-settings](https://github.com/github/safe-settings), a GitHub App built on Probot, applies the config in this repo. `ADMIN_REPO=core`.
 - `.github/settings.yml`: org-wide defaults for every repo.
 - `.github/suborgs/clean-code.yml`: `specs`, `engine`, `tools`, `agent-kit`.
-- `.github/repos/core.yml`: overrides for `core`.
+- `.github/repos/<name>.yml`: per-repo overrides, such as each repo's description and topics (`core`, `agent-kit`, `specs`). Add one for every new repo.
 - It manages rulesets, branch protection, teams, collaborators, labels, environments and variables, and it reverts manual drift.
 - By default safe-settings does not manage repos named `admin`, `.github` or `safe-settings`, so the org `.github` repo needs its rules set another way (or a `deployment-settings.yml`; see [setup/safe-settings.md](setup/safe-settings.md)).
 - Setup steps: [setup/safe-settings.md](setup/safe-settings.md).
