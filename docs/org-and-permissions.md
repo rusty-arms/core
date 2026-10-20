@@ -40,7 +40,7 @@ Only `core` exists so far. safe-settings configures repos that already exist, so
 | **Owner** | Org owner. Member of the `admins` and `developers` teams. |
 | **`admins` team** | Admin on every repo, code owner for every repo (CODEOWNERS), and the only bypass actor. |
 | **`developers` team** | Push access. For people who write code; humans only. |
-| **Agents** | A dedicated GitHub App with write access to contents and pull requests on the code repos only. No access to `core`'s `.github/`, no admin rights. GitHub does not let you approve your own pull request, so agents need their own identity. |
+| **Agents** | Push and open pull requests as the owner's account. GitHub does not let you approve your own pull request, so the owner merges agent pull requests with the `admins` bypass. |
 | **Oracle runner** | A separate local process with its own token, which agents cannot read. It posts the required `oracle` commit status. If agents could post it themselves, they could fake it. |
 | **safe-settings App** | Applies the settings in this repo. |
 

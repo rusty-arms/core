@@ -79,6 +79,6 @@ Never put any of these in YAML. Delete the downloaded `.pem` once it is stored, 
 
 - `ADMIN_REPO=core` is set in the workflow.
 - By default safe-settings skips repos named `admin`, `.github` and `safe-settings`. When the org `.github` repo is created, either protect it by hand or add a `deployment-settings.yml` with `restrictedRepos` (see the safe-settings README, "Restricting safe-settings to specific repos").
-- `settings.yml` defines two teams, `admins` and `developers`. safe-settings creates or updates them; add yourself to both in the org's **Teams** page. The `admins` team is the code owner and the only bypass actor, so keep its membership to people you trust with org settings, and never add the agents' App to it.
+- `settings.yml` defines two teams, `admins` and `developers`. safe-settings creates or updates them; add yourself to both in the org's **Teams** page. The `admins` team is the code owner and the only bypass actor, so keep its membership to people you trust with org settings.
 - The `oracle` ruleset in `suborgs/clean-code.yml` is disabled until the oracle runner exists.
 - If you want protection on `core` before safe-settings runs, a single `gh api` call can create a matching ruleset; ask the agent for it.

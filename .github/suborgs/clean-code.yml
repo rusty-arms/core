@@ -11,8 +11,7 @@ rulesets:
   - name: main
     target: branch
     enforcement: active
-    # Only the admins team may bypass. Never add the agents' GitHub App, or
-    # any team it belongs to, as a bypass actor.
+    # Only the admins team may bypass.
     bypass_actors:
       - name: admins
         actor_type: Team
