@@ -31,7 +31,13 @@ Needed before: any local agent session.
   yamllint -s .
   ```
 
-- [ ] Always start Claude Code from inside a project repo (`cd core && claude`). A session started anywhere else does not run the clean-room guard.
+- [ ] **Install the `agent-kit` plugin for your user,** so every Claude Code session on this PC runs the clean-room guard, the format/lint hook and the session rules, wherever it starts. The blocklist must exist first, because the guard blocks every tool call without it. In Claude Code:
+
+  ```text
+  /plugin install agent-kit --marketplace rusty-arms/agent-kit
+  ```
+
+  Restart Claude Code. A new session's context should include "Rusty Arms session rules". Details: the [agent-kit README](https://github.com/rusty-arms/agent-kit#install).
 
 ## 2. Create the next repos
 
@@ -89,7 +95,15 @@ The lab is the only place allowed to hold retail data or anything derived from i
 
   Don't keep the lab in a cloud-synced folder such as Dropbox, OneDrive or Google Drive. That puts retail data on someone else's servers.
 
-- [ ] **Install the observer instructions and guard** from `agent-kit` once it ships them. Until then, don't start Claude Code in the lab: a session there loads none of `core`'s guard rails.
+- [ ] **Install the observer profile** from a clone of `agent-kit`. It copies the lab's `CLAUDE.md` and `.claude/settings.json` into the lab, and never overwrites a file:
+
+  ```sh
+  git clone https://github.com/rusty-arms/agent-kit.git ~/Develop/rusty-arms/agent-kit
+  ~/Develop/rusty-arms/agent-kit/profiles/lab/install.sh
+  cd ~/Develop/rusty-arms/ma-lab && git add CLAUDE.md .claude/settings.json && git commit -m "Add the observer profile"
+  ```
+
+  Until it is installed, don't start Claude Code in the lab.
 
 - [ ] **How the lab is used:**
   - Only observer sessions work in the lab, and they are started from inside it (`cd ~/Develop/rusty-arms/ma-lab && claude`). The guard lets a session read the lab only when it starts there.
@@ -119,7 +133,7 @@ Needed before: any public release. None of these blocks development.
 ## Order at a glance
 
 1. You: prepare your PC (section 1) and create `agent-kit` (section 2).
-2. Agent session: build `agent-kit`.
+2. Agent session: build `agent-kit`. Done 2026-10-20; install it (section 1).
 3. You: create `specs` (section 2).
 4. Agent session: the `specs` skeleton.
 5. You: the lab and the disc (sections 3 and 4).
