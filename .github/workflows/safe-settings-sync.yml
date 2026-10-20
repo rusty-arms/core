@@ -1,18 +1,33 @@
 # Runs a safe-settings full sync from GitHub Actions, based on
 # github/safe-settings docs/github-action.md.
 #
-# DISABLED until the owner finishes docs/setup/safe-settings.md: manual
-# workflow_dispatch only, dry run by default. Add a schedule only after a
-# dry run has been reviewed.
+# Applies the config whenever it changes on main. Run it by hand (dry run by
+# default) to preview, or to revert drift made outside this repo.
+#
+# There is no dry run on pull requests: a full sync reads the config from the
+# default branch through the API, not from the checkout, so a PR run would
+# only preview main.
 name: safe-settings sync
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - .github/settings.yml
+      - .github/suborgs/**
+      - .github/repos/**
+      - .github/workflows/safe-settings-sync.yml
   workflow_dispatch:
     inputs:
       dry_run:
         description: "Dry run (FULL_SYNC_NOP): report changes without applying them"
         type: boolean
         default: true
+
+# Never run two syncs at once; a newer push waits for the running one.
+concurrency:
+  group: safe-settings-sync
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -56,4 +71,5 @@ jobs:
           # Probot logs only warnings and errors by default; info prints the
           # dry-run summary of planned changes.
           LOG_LEVEL: info
-          FULL_SYNC_NOP: ${{ inputs.dry_run && 'true' || 'false' }}
+          # Pushes apply for real; manual runs follow the dry_run input.
+          FULL_SYNC_NOP: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && 'true' || 'false' }}

@@ -50,7 +50,7 @@ On the App's page, click **Install** and choose **All repositories** (the docs s
 
 ## 3. Choose a deployment method
 
-**Recommended: GitHub Actions.** The docs support running a full sync with `npm run full-sync` from a workflow. This repo already contains one: [`.github/workflows/safe-settings-sync.yml`](../../.github/workflows/safe-settings-sync.yml). It is manual-only (`workflow_dispatch`) and dry-runs by default. Trade-off: Actions runs are scheduled or manual, so there is no instant drift revert and no PR dry-run check from the App; those need the webhook deployment.
+**Recommended: GitHub Actions.** The docs support running a full sync with `npm run full-sync` from a workflow. This repo already contains one: [`.github/workflows/safe-settings-sync.yml`](../../.github/workflows/safe-settings-sync.yml). It applies the config on every push to `main` that changes `.github/settings.yml`, `.github/suborgs/`, `.github/repos/` or the workflow itself, and it can be run by hand (dry run by default). Trade-off: there is no instant drift revert and no dry-run check on pull requests; those need the webhook deployment. A full sync reads the config from `main` through the API, so an Actions dry run on a PR would only preview `main`. To preview a change, merge it and read the log, or run the workflow by hand first.
 
 **Alternative: Docker on the PC** (`docs/deploy.md`, "Docker"): clone safe-settings, copy `.env.example` to `.env`, set `APP_ID`, `WEBHOOK_SECRET`, `PRIVATE_KEY` and `ADMIN_REPO=core`, then `docker build -t safe-settings .` and `docker run -d -p 3000:3000 safe-settings`. This needs a public webhook URL, so it is more work and exposes a port; not recommended for now.
 
@@ -73,7 +73,7 @@ Never put any of these in YAML. Delete the downloaded `.pem` once it is stored, 
 1. **Actions → safe-settings sync → Run workflow**, with **Dry run** ticked (`FULL_SYNC_NOP=true`).
 2. Read the log: it lists the changes it would make. Check the `main` ruleset, labels and repo settings for `core`.
 3. If it looks right, run it again with **Dry run** unticked.
-4. Optionally add a `schedule:` trigger (the docs' example uses every 4 hours) in a PR.
+4. From then on, merging a settings change to `main` applies it. Settings changed by hand in GitHub stay changed until the next sync; run the workflow by hand to revert them, or add a `schedule:` trigger in a PR.
 
 ## Notes
 

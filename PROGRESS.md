@@ -2,7 +2,7 @@
 
 ## Done
 
-- **Phase 0, part 1 (`core`)**, 2026-10-18: research brief imported; ADRs for D1–D9; clean-room, legal, media, roadmap, org, agent-workflow and provenance docs; safe-settings config (org defaults, `clean-code` suborg, `core` overrides, manual dry-run sync workflow); retail-data guard (`scripts/check_no_retail.py`, pre-commit hook, `guard` CI); project `.claude/` settings, reviewer subagent, clean-room guard hook (reads a local blocklist) and format/lint hook.
+- **Phase 0, part 1 (`core`)**, 2026-10-18: research brief imported; ADRs for D1–D9; clean-room, legal, media, roadmap, org, agent-workflow and provenance docs; safe-settings config (org defaults, `clean-code` suborg, `core` overrides, sync workflow that applies config changes on push to `main`); retail-data guard (`scripts/check_no_retail.py`, pre-commit hook, `guard` CI); project `.claude/` settings, reviewer subagent, clean-room guard hook (reads a local blocklist) and format/lint hook.
 - Waiting on the owner's manual steps: [docs/setup/owner-checklist.md](docs/setup/owner-checklist.md).
 
 ## Next session (one task)
