@@ -9,12 +9,13 @@ These are the manual tasks that an agent can't or mustn't do, in the order they 
 - [x] **Blocklist:** `~/.claude/cleanroom-blocklist.txt` exists and the guard's tests pass ([claude-guard.md](claude-guard.md)). Cloud sessions use `CLEANROOM_BLOCKLIST_TERMS`.
 - [x] **Teams:** `admins` and `developers` exist, and you are in both.
 - [x] **safe-settings:** the App is installed, and the sync runs on every settings change merged to `main` ([safe-settings.md](safe-settings.md)).
+- [x] **Repos:** `agent-kit` and `specs` exist on GitHub with a `main` branch. The rest of section 2 is still to confirm for both.
 
 ## 1. Prepare your PC
 
 Needed before: any local agent session.
 
-- [ ] Clone `core` and turn on its git hooks:
+- [x] Clone `core` and turn on its git hooks:
 
   ```sh
   git clone https://github.com/rusty-arms/core.git
@@ -22,7 +23,7 @@ Needed before: any local agent session.
   git config core.hooksPath .githooks
   ```
 
-- [ ] Install the tools the hooks and checks use: `git`, `python3`, `yamllint`, and optionally `ruff` (the format/lint hook uses it when it is installed). Check that they work:
+- [ ] Install the tools the hooks and checks use: `git`, `python3`, `yamllint`, and optionally `ruff` (the format/lint hook uses it when it is installed). `git` and `python3` work; `yamllint` and `ruff` are still missing. Check that they work:
 
   ```sh
   python3 scripts/check_no_retail.py --all
@@ -87,6 +88,8 @@ The lab is the only place allowed to hold retail data or anything derived from i
   ```
 
   Don't keep the lab in a cloud-synced folder such as Dropbox, OneDrive or Google Drive. That puts retail data on someone else's servers.
+
+- [ ] **Install the observer instructions and guard** from `agent-kit` once it ships them. Until then, don't start Claude Code in the lab: a session there loads none of `core`'s guard rails.
 
 - [ ] **How the lab is used:**
   - Only observer sessions work in the lab, and they are started from inside it (`cd ~/Develop/rusty-arms/ma-lab && claude`). The guard lets a session read the lab only when it starts there.
