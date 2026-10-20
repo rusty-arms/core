@@ -1,0 +1,11 @@
+# safe-settings overrides for specs. Its rulesets come from
+# suborgs/clean-code.yml; this file only sets the description and topics.
+
+repository:
+  description: >-
+    Rusty Arms format and behaviour specs, written by observers in their own
+    words. The clean-room wall: no code or data from the original game.
+  topics:
+    - clean-room
+    - documentation
+    - specification
