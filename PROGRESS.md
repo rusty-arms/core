@@ -18,4 +18,4 @@ Create `agent-kit` as a Claude Code plugin that moves the guard hook, the review
 
 ## Where the last session stopped
 
-2026-10-18 (cloud session): `core` written on branch `claude/project-thread-1t9bee` and opened as a draft PR. Not done from the cloud, so still the owner's: local tool checks, creating the blocklist (checklist item 0), GitHub Apps, safe-settings deployment, the lab, disc hash, UK IPO check.
+2026-10-18 (cloud session): `core` written on branch `claude/project-thread-1t9bee` and opened as a draft PR. Not done from the cloud, so still the owner's: local tool checks, creating the blocklist (checklist item 0), the safe-settings App and deployment, the lab, disc hash, UK IPO check.

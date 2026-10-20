@@ -50,8 +50,7 @@ labels:
     - name: "^(bug|documentation|duplicate|enhancement|good first issue|help wanted|invalid|question|wontfix)$"
 
 # Teams. admins: the owner and anyone trusted with org settings; code owner
-# for every repo. developers: people who push code. The agents' GitHub App is
-# not a member of either team.
+# for every repo. developers: people who push code.
 teams:
   - name: admins
     permission: admin
