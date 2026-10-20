@@ -53,4 +53,7 @@ jobs:
           GITHUB_CLIENT_SECRET: ${{ secrets.SAFE_SETTINGS_GITHUB_CLIENT_SECRET }}
           ADMIN_REPO: core
           CONFIG_PATH: .github
+          # Probot logs only warnings and errors by default; info prints the
+          # dry-run summary of planned changes.
+          LOG_LEVEL: info
           FULL_SYNC_NOP: ${{ inputs.dry_run && 'true' || 'false' }}
