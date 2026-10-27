@@ -14,9 +14,9 @@ That is the Phase 0 exit gate in the [roadmap](roadmap.md): "An agent replays a 
 
 ## How it talks to Dolphin
 
-Mainline Dolphin can play back input recordings, but it cannot read memory or save screenshots on chosen frames from a script. The rig uses a public fork of Dolphin that embeds Python and exposes memory reads, per-frame controller input, frame events, drawn frames and savestates to a script. The fork's preview releases ship Windows x64 builds only. The lab PC runs Linux, so the owner chose to run that build in a local Windows VM under Docker; the VM has no GPU acceleration, so Dolphin renders in software and replays run slower than real time, without changing their results.
+Mainline Dolphin can play back input recordings, but it cannot read memory or save screenshots on chosen frames from a script. The rig uses a public fork of Dolphin that embeds Python and exposes memory reads, per-frame controller input, frame events, drawn frames and savestates to a script. The fork's preview releases ship Windows x64 builds only. The lab PC runs Linux, so the owner chose to build the fork from source there: its scripting module links against the system Python, and the rig provides a build script. A local Windows VM running the Windows build is the fallback; it was set aside because without GPU acceleration it renders in software and runs much slower.
 
-A launcher (`python -m oracle.replay`), running inside the VM, starts Dolphin with the rig's script and waits for the run to finish. The script, inside Dolphin, sets the controller each frame from the input file, reads the watched addresses, saves the screenshots, and writes its results.
+A launcher on the lab PC (`python3 -m oracle.replay`) starts Dolphin with the rig's script and waits for the run to finish. The script, inside Dolphin, sets the controller each frame from the input file, reads the watched addresses, saves the screenshots, and writes its results.
 
 The brief mentions a scriptable-Dolphin MCP server. One exists, built on the same fork, but in its first release it has no screenshots, and it drives the game one tool call at a time, which is too slow and too loose for repeatable recordings. It may still help an observer explore interactively later. It is not used for golden data.
 
@@ -38,7 +38,7 @@ A golden trace is only useful if the same inputs always give the same trace. Eac
 | Real input scripts | Lab `inputs/` | No |
 | Watch lists (addresses in the game are observations) | Lab `notes/` | No |
 | Traces, `run.json` and Dolphin's log | Lab `traces/` | No |
-| The Windows VM and its disk | Lab PC, outside every repo | No |
+| The scripting Dolphin build | Lab PC, outside the lab | No |
 | Screenshots | Lab `captures/` | No |
 
 The rig's repo holds no game data and no addresses in the game. Its examples use only made-up inputs and generic GameCube boot values from public hardware documentation.

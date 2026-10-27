@@ -133,10 +133,28 @@ Needed before: the end of Phase 0, and any observer work that records traces.
   git clone https://github.com/rusty-arms/oracle.git ~/Develop/rusty-arms/oracle
   ```
 
-- [ ] **Set up the Windows VM.** The scripting build of Dolphin ships for Windows only, so on the Pop!_OS lab PC it runs in a local Windows VM under Docker. Follow sections 1 and 2 of the rig's [VM guide](https://github.com/rusty-arms/oracle/blob/main/vm/README.md): check KVM, install Docker Engine, start the VM with the lab shared as drive `Z:`, then install Python, the scripting Dolphin and the rig inside it and turn on SSH. Keep the VM's disk out of every repo and cloud-synced folder.
-- [ ] **Run the smoke test yourself** from the VM's desktop (VM guide, section 3). It boots the disc, waits ten seconds, takes two screenshots and reads three generic boot values. `--repeat 2` runs it twice and checks that both runs match, so it should end with "2 runs identical". If it fails, `dolphin.log` in the `--out` folder has Dolphin's output. Delete both output folders before trying again.
-- [ ] **Try the same run over SSH** from the Linux side (VM guide, section 3). Say in your report whether it worked; if it didn't, the rig needs a bridge before the gate below.
-- [ ] **Phase 0 gate, part 1:** start an observer session in the lab (`cd ~/Develop/rusty-arms/ma-lab && claude`) and ask it to replay the smoke test in the VM over SSH into `traces/smoke-agent` and `captures/smoke-agent`, then report the trace's hash and the screenshots it saved.
+- [ ] **Build the scripting Dolphin.** It ships for Windows only, so on the Pop!_OS lab PC you build it from source with the rig's script. It installs the build dependencies with `apt`, then compiles for roughly 30 to 60 minutes, and leaves your normal Dolphin alone. Details and a quick check are in the rig's [Linux build guide](https://github.com/rusty-arms/oracle/blob/main/linux/README.md).
+
+  ```sh
+  ~/Develop/rusty-arms/oracle/linux/build-dolphin.sh
+  ```
+
+  The script hasn't been run on a real PC yet. If it fails, send the last 50 lines of its output to the next session. If it can't be fixed, the rig's [VM guide](https://github.com/rusty-arms/oracle/blob/main/vm/README.md) is the fallback.
+
+- [ ] **Run the smoke test yourself.** It boots the disc, waits ten seconds, takes two screenshots and reads three generic boot values. `--repeat 2` runs it twice and checks that both runs match:
+
+  ```sh
+  export ORACLE_DOLPHIN=~/Develop/rusty-arms/dolphin-scripting/build/Binaries/dolphin-emu
+  export ORACLE_DISC=~/Develop/rusty-arms/ma-lab/disc/<your image>
+  cd ~/Develop/rusty-arms/oracle
+  python3 -m oracle.replay examples/smoke.inputs --watch examples/smoke.watch \
+      --out ~/Develop/rusty-arms/ma-lab/traces/smoke \
+      --shots ~/Develop/rusty-arms/ma-lab/captures/smoke --repeat 2
+  ```
+
+  It should end with "2 runs identical". If it fails, `dolphin.log` in the `--out` folder has Dolphin's output. Delete both output folders before trying again.
+
+- [ ] **Phase 0 gate, part 1:** start an observer session in the lab (`cd ~/Develop/rusty-arms/ma-lab && claude`) and ask it to replay the smoke test into `traces/smoke-agent` and `captures/smoke-agent`, then report the trace's hash and the screenshots it saved.
 - [ ] **Phase 0 gate, part 2:** in a session started anywhere else, ask the agent to read a file in the lab. The guard must block it.
 - [ ] **Report back** in a PR or to the next session: whether the runs matched and both gate checks passed, and any error from `run.json`. Never paste traces, screenshots or log excerpts that show game data.
 
