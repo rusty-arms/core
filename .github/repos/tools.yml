@@ -1,0 +1,11 @@
+# safe-settings overrides for tools. Its rulesets come from
+# suborgs/clean-code.yml; this file only sets the description and topics.
+
+repository:
+  description: >-
+    Rusty Arms tools: Python parsers, validators and a level viewer for the
+    disc's file formats, written from the specs. Code only: no game data.
+  topics:
+    - clean-room
+    - python
+    - file-formats
