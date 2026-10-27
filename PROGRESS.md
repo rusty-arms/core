@@ -24,7 +24,7 @@ This file shows where the project has got to. It is public on purpose: progress 
 | Create the `agent-kit` and `specs` repos | Owner | In progress: both repos exist; App access, settings sync and Claude project access still to confirm |
 | `agent-kit` Claude Code plugin | Agent | Done, 2026-10-20; owner to install it (checklist section 1) |
 | Observer instructions and guard for the lab | Agent (in `agent-kit`) + owner (install) | Profile shipped in `agent-kit`; owner to install it (checklist section 3) |
-| `specs` skeleton | Agent | In review: [specs #1](https://github.com/rusty-arms/specs/pull/1) |
+| `specs` skeleton | Agent | Done, 2026-10-27 ([specs #1](https://github.com/rusty-arms/specs/pull/1)) |
 | Lab and disc verification (local only) | Owner | Not started |
 | Dolphin oracle rig: scripted input replay to RAM trace and screenshots | Agent | Not started |
 
@@ -56,4 +56,4 @@ The Dolphin oracle rig, once the owner has set up the lab and verified the disc 
 
 ## Where the last session stopped
 
-2026-10-27: the `specs` skeleton is up for review in [specs #1](https://github.com/rusty-arms/specs/pull/1): licence, guard files copied from core, CODEOWNERS, agent settings that enable the `agent-kit` plugin, the rules for writing a spec, templates, and indexes of the planned specs. No spec has been written. The owner merges it with the `admins` bypass, because it introduces the required `guard` check.
+2026-10-27: the `specs` skeleton is merged ([specs #1](https://github.com/rusty-arms/specs/pull/1)): CC BY 4.0 for specs and MIT for scripts, guard files copied from core, CODEOWNERS, agent settings that enable the `agent-kit` plugin, the rules for writing a spec, templates, and indexes of the planned specs. No spec has been written. Nothing is half-done.
