@@ -127,27 +127,16 @@ Scripting Dolphin for RAM traces and replays needs a separate build of Dolphin; 
 Needed before: the end of Phase 0, and any observer work that records traces.
 
 - [ ] **Create the `oracle` repo** as in section 2: create it, give the Apps access, run the settings sync, and add it to the Claude project. Its description, topics and suborg entry are already in this repo. Merge its first PR, which adds the rig, with your `admins` bypass.
-- [ ] **Install the scripting build of Dolphin** next to your normal one; don't replace it. Download the latest "Python Scripting Preview" release from Felk's fork (github.com/Felk/dolphin, Releases). Those builds are Windows x64; on another system, build the fork from source. Note the path to its executable.
 - [ ] **Clone the rig** outside the lab:
 
   ```sh
   git clone https://github.com/rusty-arms/oracle.git ~/Develop/rusty-arms/oracle
   ```
 
-- [ ] **Run the smoke test yourself.** It boots the disc, waits ten seconds, takes two screenshots and reads three generic boot values. `--repeat 2` runs it twice and checks that both runs match:
-
-  ```sh
-  export ORACLE_DOLPHIN=/path/to/scripting/Dolphin.exe
-  export ORACLE_DISC=~/Develop/rusty-arms/ma-lab/disc/<your image>
-  cd ~/Develop/rusty-arms/oracle
-  python3 -m oracle.replay examples/smoke.inputs --watch examples/smoke.watch \
-      --out ~/Develop/rusty-arms/ma-lab/traces/smoke \
-      --shots ~/Develop/rusty-arms/ma-lab/captures/smoke --repeat 2
-  ```
-
-  It should end with "2 runs identical". If it fails, `dolphin.log` in the `--out` folder has Dolphin's output. Delete both output folders before trying again.
-
-- [ ] **Phase 0 gate, part 1:** start an observer session in the lab (`cd ~/Develop/rusty-arms/ma-lab && claude`) and ask it to replay the smoke test into `traces/smoke-agent` and `captures/smoke-agent`, then report the trace's hash and the screenshots it saved.
+- [ ] **Set up the Windows VM.** The scripting build of Dolphin ships for Windows only, so on the Pop!_OS lab PC it runs in a local Windows VM under Docker. Follow sections 1 and 2 of the rig's [VM guide](https://github.com/rusty-arms/oracle/blob/main/vm/README.md): check KVM, install Docker Engine, start the VM with the lab shared as drive `Z:`, then install Python, the scripting Dolphin and the rig inside it and turn on SSH. Keep the VM's disk out of every repo and cloud-synced folder.
+- [ ] **Run the smoke test yourself** from the VM's desktop (VM guide, section 3). It boots the disc, waits ten seconds, takes two screenshots and reads three generic boot values. `--repeat 2` runs it twice and checks that both runs match, so it should end with "2 runs identical". If it fails, `dolphin.log` in the `--out` folder has Dolphin's output. Delete both output folders before trying again.
+- [ ] **Try the same run over SSH** from the Linux side (VM guide, section 3). Say in your report whether it worked; if it didn't, the rig needs a bridge before the gate below.
+- [ ] **Phase 0 gate, part 1:** start an observer session in the lab (`cd ~/Develop/rusty-arms/ma-lab && claude`) and ask it to replay the smoke test in the VM over SSH into `traces/smoke-agent` and `captures/smoke-agent`, then report the trace's hash and the screenshots it saved.
 - [ ] **Phase 0 gate, part 2:** in a session started anywhere else, ask the agent to read a file in the lab. The guard must block it.
 - [ ] **Report back** in a PR or to the next session: whether the runs matched and both gate checks passed, and any error from `run.json`. Never paste traces, screenshots or log excerpts that show game data.
 
