@@ -156,9 +156,18 @@ Needed before: the end of Phase 0, and any observer work that records traces.
 
   Passed on 2026-10-27, after a fix: on a Wayland desktop Dolphin never ran a frame. [oracle #3](https://github.com/rusty-arms/oracle/pull/3) makes the rig run Dolphin through X11. Until it is merged, also `export QT_QPA_PLATFORM=xcb` before running the rig.
 
-- [ ] **Phase 0 gate, part 1:** start an observer session in the lab (`cd ~/Develop/rusty-arms/ma-lab && claude`) and ask it to replay the smoke test into `traces/smoke-agent` and `captures/smoke-agent`, then report the trace's hash and the screenshots it saved.
-- [ ] **Phase 0 gate, part 2:** in a session started anywhere else, ask the agent to read a file in the lab. The guard must block it.
-- [ ] **Report back** in a PR or to the next session: whether the runs matched and both gate checks passed, and any error from `run.json`. Never paste traces, screenshots or log excerpts that show game data.
+- [x] **Phase 0 gate, part 1:** start an observer session in the lab (`cd ~/Develop/rusty-arms/ma-lab && claude`) and ask it to replay the smoke test into `traces/smoke-agent` and `captures/smoke-agent`, then report the trace's hash and the screenshots it saved.
+- [x] **Phase 0 gate, part 2:** in a session started anywhere else, ask the agent to read a file in the lab. The guard must block it.
+- [x] **Report back** in a PR or to the next session: whether the runs matched and both gate checks passed, and any error from `run.json`. Never paste traces, screenshots or log excerpts that show game data.
+
+  Phase 0 passed on 2026-10-27.
+- [ ] **Commit the smoke traces in the lab.** `traces/` is tracked in the lab's git, so commit `traces/smoke` and `traces/smoke-agent` there. Never add a remote.
+
+## 7. Start Phase 1
+
+Needed before: any Phase 1 parser work.
+
+- [ ] **Create the `tools` repo** as in section 2. Its suborg entry is already in [`clean-code.yml`](../../.github/suborgs/clean-code.yml); it still needs `.github/repos/tools.yml`, which an agent can draft for your approval.
 
 ## 5. Legal checks
 
@@ -177,4 +186,5 @@ Needed before: any public release. None of these blocks development.
 5. You: the lab and the disc (sections 3 and 4).
 6. Agent session: the Dolphin oracle rig.
 7. You: create `oracle` and run the first replay (section 6).
-8. Phase 0 is done when an agent replays a scripted input file in Dolphin and produces a RAM trace and screenshots, and the hooks block deliberately bad actions.
+8. Phase 0 is done when an agent replays a scripted input file in Dolphin and produces a RAM trace and screenshots, and the hooks block deliberately bad actions. Done 2026-10-27.
+9. You: create `tools` (section 7). Then Phase 1 starts.

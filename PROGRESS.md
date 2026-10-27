@@ -4,12 +4,12 @@ This file shows where the project has got to. It is public on purpose: progress 
 
 ## Status
 
-**Current phase:** 0, Foundations. No engine code exists yet.
+**Current phase:** 1, Read the whole disc. Phase 0 finished on 2026-10-27. No engine code exists yet.
 
 | Phase | State |
 |---|---|
-| 0. Foundations | In progress |
-| 1. Read the whole disc | Not started |
+| 0. Foundations | Done, 2026-10-27 |
+| 1. Read the whole disc | Next: the owner creates the `tools` repo |
 | 2. Walk, shoot, possess | Not started |
 | 3. Online co-op | Not started |
 | 4. Remaster polish | Not started |
@@ -21,13 +21,13 @@ This file shows where the project has got to. It is public on purpose: progress 
 |---|---|---|
 | `core` repo: research, ADRs, policies, guard rails, safe-settings | Agent + owner | Done, 2026-10-20 |
 | GitHub org setup: teams, safe-settings App, automatic settings sync | Owner | Done, 2026-10-20 |
-| Create the `agent-kit` and `specs` repos | Owner | In progress: both repos exist; App access, settings sync and Claude project access still to confirm |
-| `agent-kit` Claude Code plugin | Agent | Done, 2026-10-20; owner to install it (checklist section 1) |
-| Observer instructions and guard for the lab | Agent (in `agent-kit`) + owner (install) | Profile shipped in `agent-kit`; owner to install it (checklist section 3) |
+| Create the `agent-kit` and `specs` repos | Owner | Done (checklist section 2) |
+| `agent-kit` Claude Code plugin | Agent + owner | Done, 2026-10-20; installed (checklist section 1) |
+| Observer instructions and guard for the lab | Agent (in `agent-kit`) + owner (install) | Done; installed in the lab (checklist section 3) |
 | `specs` skeleton | Agent | Done, 2026-10-27 ([specs #1](https://github.com/rusty-arms/specs/pull/1)) |
 | Lab and disc verification (local only) | Owner | Done, 2026-10-27 ([core #12](https://github.com/rusty-arms/core/pull/12)) |
-| Dolphin oracle rig: scripted input replay to RAM trace and screenshots | Agent + owner | Done, 2026-10-27: the owner's smoke test replays from boot and two runs match, after the Wayland and callback fixes in [oracle #3](https://github.com/rusty-arms/oracle/pull/3) (awaiting merge) |
-| Phase 0 gate: an agent replays a script in Dolphin; the hooks block bad actions | Owner + observer session | Not started |
+| Dolphin oracle rig: scripted input replay to RAM trace and screenshots | Agent + owner | Done, 2026-10-27: the owner's smoke test replays from boot and two runs match, after the Wayland and callback fixes in [oracle #3](https://github.com/rusty-arms/oracle/pull/3) |
+| Phase 0 gate: an agent replays a script in Dolphin; the hooks block bad actions | Owner + observer session | Passed, 2026-10-27 |
 
 The owner's manual steps are in [docs/setup/owner-checklist.md](docs/setup/owner-checklist.md).
 
@@ -57,11 +57,15 @@ The owner's manual steps are in [docs/setup/owner-checklist.md](docs/setup/owner
   - the fork can't unregister a callback, so the rig's clean-up failed after every run; fixed;
   - Dolphin's script log is now on, so the rig's Python errors reach `dolphin.log`;
   - the owner's smoke test passed: two runs from boot match.
+- **2026-10-27, Phase 0 gate passed:**
+  - an observer session in the lab replayed the smoke test: two runs gave identical traces and screenshots, and `run.json` records no error;
+  - the observer checked a screenshot: the right way up, normal colours, nothing scrambled;
+  - a session started outside the lab tried to read a lab file, and the guard blocked it.
 
 ## Next session (one task)
 
-Close Phase 0: the owner merges oracle #3 and runs the two Phase 0 gate checks (checklist section 6). Then Phase 1 can start.
+Start Phase 1. The owner first creates the `tools` repo (checklist section 7). The first observer task is a spec, in `specs`, for the disc's main archive format.
 
 ## Where the last session stopped
 
-2026-10-27: the first real replay works. The smoke test first timed out on the lab PC with an empty trace, because Dolphin hangs while booting under native Wayland. [oracle #3](https://github.com/rusty-arms/oracle/pull/3) forces X11 for Dolphin, fixes the callback clean-up and turns on Dolphin's script log. Its tests pass, and the fixed rig replayed a homebrew test program (no game data) on the real build with matching runs. Still unchecked on a real Dolphin: the screenshot pixel layout and `set_gc_buttons` overriding port 1 (the smoke test presses nothing). Nothing is half-done.
+2026-10-27: Phase 0 is done. Both gate checks passed, and the oracle rig works on the lab PC. Still unchecked on a real Dolphin: that `set_gc_buttons` overrides port 1, because the smoke test presses nothing. The first observer replay with inputs will show it. Screenshots come out at the game's aspect-corrected output size, so they don't depend on the window. Nothing is half-done.
