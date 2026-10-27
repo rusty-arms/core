@@ -120,7 +120,43 @@ Needed before: anything that reads the disc.
 - [x] Add a dated line to the [provenance log](../provenance-log.md) saying the reference disc was verified. Never upload the image anywhere.
 - [x] Set Dolphin's internal resolution to 1x. Dolphin's wiki recommends this to avoid cutscene problems.
 
-How to script Dolphin for RAM traces and replays is still open. A scriptable-Dolphin MCP server exists, but nobody has confirmed it works with Claude Code. The oracle rig session will work this out.
+Scripting Dolphin for RAM traces and replays needs a separate build of Dolphin; section 6 installs it. The design is in [oracle-rig.md](../oracle-rig.md).
+
+## 6. Run the first oracle replay
+
+Needed before: the end of Phase 0, and any observer work that records traces.
+
+- [ ] **Create the `oracle` repo** as in section 2: create it, give the Apps access, run the settings sync, and add it to the Claude project. Its description, topics and suborg entry are already in this repo. Merge its first PR, which adds the rig, with your `admins` bypass.
+- [ ] **Clone the rig** outside the lab:
+
+  ```sh
+  git clone https://github.com/rusty-arms/oracle.git ~/Develop/rusty-arms/oracle
+  ```
+
+- [ ] **Build the scripting Dolphin.** It ships for Windows only, so on the Pop!_OS lab PC you build it from source with the rig's script. It installs the build dependencies with `apt`, then compiles for roughly 30 to 60 minutes, and leaves your normal Dolphin alone. Details and a quick check are in the rig's [Linux build guide](https://github.com/rusty-arms/oracle/blob/main/linux/README.md).
+
+  ```sh
+  ~/Develop/rusty-arms/oracle/linux/build-dolphin.sh
+  ```
+
+  The script hasn't been run on a real PC yet. If it fails, send the last 50 lines of its output to the next session. If it can't be fixed, the rig's [VM guide](https://github.com/rusty-arms/oracle/blob/main/vm/README.md) is the fallback.
+
+- [ ] **Run the smoke test yourself.** It boots the disc, waits ten seconds, takes two screenshots and reads three generic boot values. `--repeat 2` runs it twice and checks that both runs match:
+
+  ```sh
+  export ORACLE_DOLPHIN=~/Develop/rusty-arms/dolphin-scripting/build/Binaries/dolphin-emu
+  export ORACLE_DISC=~/Develop/rusty-arms/ma-lab/disc/<your image>
+  cd ~/Develop/rusty-arms/oracle
+  python3 -m oracle.replay examples/smoke.inputs --watch examples/smoke.watch \
+      --out ~/Develop/rusty-arms/ma-lab/traces/smoke \
+      --shots ~/Develop/rusty-arms/ma-lab/captures/smoke --repeat 2
+  ```
+
+  It should end with "2 runs identical". If it fails, `dolphin.log` in the `--out` folder has Dolphin's output. Delete both output folders before trying again.
+
+- [ ] **Phase 0 gate, part 1:** start an observer session in the lab (`cd ~/Develop/rusty-arms/ma-lab && claude`) and ask it to replay the smoke test into `traces/smoke-agent` and `captures/smoke-agent`, then report the trace's hash and the screenshots it saved.
+- [ ] **Phase 0 gate, part 2:** in a session started anywhere else, ask the agent to read a file in the lab. The guard must block it.
+- [ ] **Report back** in a PR or to the next session: whether the runs matched and both gate checks passed, and any error from `run.json`. Never paste traces, screenshots or log excerpts that show game data.
 
 ## 5. Legal checks
 
@@ -138,4 +174,5 @@ Needed before: any public release. None of these blocks development.
 4. Agent session: the `specs` skeleton.
 5. You: the lab and the disc (sections 3 and 4).
 6. Agent session: the Dolphin oracle rig.
-7. Phase 0 is done when an agent replays a scripted input file in Dolphin and produces a RAM trace and screenshots, and the hooks block deliberately bad actions.
+7. You: create `oracle` and run the first replay (section 6).
+8. Phase 0 is done when an agent replays a scripted input file in Dolphin and produces a RAM trace and screenshots, and the hooks block deliberately bad actions.

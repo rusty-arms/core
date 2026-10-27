@@ -1,0 +1,11 @@
+# safe-settings overrides for oracle. Its rulesets come from
+# suborgs/clean-code.yml; this file only sets the description and topics.
+
+repository:
+  description: >-
+    Rusty Arms oracle rig: replays scripted inputs in Dolphin and records RAM
+    traces and screenshots. Code only: no game data, addresses or captures.
+  topics:
+    - clean-room
+    - dolphin-emulator
+    - testing

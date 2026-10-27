@@ -25,8 +25,9 @@ This file shows where the project has got to. It is public on purpose: progress 
 | `agent-kit` Claude Code plugin | Agent | Done, 2026-10-20; owner to install it (checklist section 1) |
 | Observer instructions and guard for the lab | Agent (in `agent-kit`) + owner (install) | Profile shipped in `agent-kit`; owner to install it (checklist section 3) |
 | `specs` skeleton | Agent | Done, 2026-10-27 ([specs #1](https://github.com/rusty-arms/specs/pull/1)) |
-| Lab and disc verification (local only) | Owner | Not started |
-| Dolphin oracle rig: scripted input replay to RAM trace and screenshots | Agent | Not started |
+| Lab and disc verification (local only) | Owner | Done, 2026-10-27 ([core #12](https://github.com/rusty-arms/core/pull/12)) |
+| Dolphin oracle rig: scripted input replay to RAM trace and screenshots | Agent | Written and tested against a fake Dolphin, 2026-10-27; owner to create the `oracle` repo and run the first replay (checklist section 6) |
+| Phase 0 gate: an agent replays a script in Dolphin; the hooks block bad actions | Owner + observer session | Not started |
 
 The owner's manual steps are in [docs/setup/owner-checklist.md](docs/setup/owner-checklist.md).
 
@@ -52,8 +53,8 @@ The owner's manual steps are in [docs/setup/owner-checklist.md](docs/setup/owner
 
 ## Next session (one task)
 
-The Dolphin oracle rig, once the owner has set up the lab and verified the disc (checklist sections 3 and 4).
+Fix whatever the owner's first real replay turns up (checklist section 6), then close Phase 0. If it passes first time, Phase 1 can start.
 
 ## Where the last session stopped
 
-2026-10-27: the `specs` skeleton is merged ([specs #1](https://github.com/rusty-arms/specs/pull/1)): CC BY 4.0 for specs and MIT for scripts, guard files copied from core, CODEOWNERS, agent settings that enable the `agent-kit` plugin, the rules for writing a spec, templates, and indexes of the planned specs. No spec has been written. Nothing is half-done.
+2026-10-27: the oracle rig is written ([design](docs/oracle-rig.md)). It replays an input script in a Python-scripting build of Dolphin, records watched RAM to a CSV trace and frames to PNG, writes a hashed run record, and checks that repeated runs match. Its 20 tests pass on Python 3.8 and 3.13 against a fake Dolphin; it has not yet run on a real one. Its code waits for the `oracle` repo. The owner's steps are checklist section 6. Nothing is half-done.
