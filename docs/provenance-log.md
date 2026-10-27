@@ -15,6 +15,13 @@ Every format fact and every behaviour fact gets a dated entry: what was learned,
 
 ## Entries
 
+### 2026-10-27: Reference disk verified
+- **Type:** import
+- **What:** Added the default iso under `disc` subdirectory and validated it using dolphin.
+- **How:** See step 4 of [owner-checklist.md](../docs/setup/owner-checklist.md)
+- **Session:** Ed
+- **Verified:** yes
+
 ### 2026-10-18: Research brief imported
 - **Type:** import
 - **What:** The clean-room research brief was imported unchanged as [research/brief.md](research/brief.md). It is the source of truth for decisions D1–D9 and the policies in this repo. Facts it takes from Exavolt's docs are leads only, to be verified by observation.
