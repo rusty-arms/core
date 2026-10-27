@@ -126,22 +126,22 @@ Scripting Dolphin for RAM traces and replays needs a separate build of Dolphin; 
 
 Needed before: the end of Phase 0, and any observer work that records traces.
 
-- [ ] **Create the `oracle` repo** as in section 2: create it, give the Apps access, run the settings sync, and add it to the Claude project. Its description, topics and suborg entry are already in this repo. Merge its first PR, which adds the rig, with your `admins` bypass.
-- [ ] **Clone the rig** outside the lab:
+- [x] **Create the `oracle` repo** as in section 2: create it, give the Apps access, run the settings sync, and add it to the Claude project. Its description, topics and suborg entry are already in this repo. Merge its first PR, which adds the rig, with your `admins` bypass.
+- [x] **Clone the rig** outside the lab:
 
   ```sh
   git clone https://github.com/rusty-arms/oracle.git ~/Develop/rusty-arms/oracle
   ```
 
-- [ ] **Build the scripting Dolphin.** It ships for Windows only, so on the Pop!_OS lab PC you build it from source with the rig's script. It installs the build dependencies with `apt`, then compiles for roughly 30 to 60 minutes, and leaves your normal Dolphin alone. Details and a quick check are in the rig's [Linux build guide](https://github.com/rusty-arms/oracle/blob/main/linux/README.md).
+- [x] **Build the scripting Dolphin.** It ships for Windows only, so on the Pop!_OS lab PC you build it from source with the rig's script. It installs the build dependencies with `apt`, then compiles for roughly 30 to 60 minutes, and leaves your normal Dolphin alone. Details and a quick check are in the rig's [Linux build guide](https://github.com/rusty-arms/oracle/blob/main/linux/README.md).
 
   ```sh
   ~/Develop/rusty-arms/oracle/linux/build-dolphin.sh
   ```
 
-  The script hasn't been run on a real PC yet. If it fails, send the last 50 lines of its output to the next session. If it can't be fixed, the rig's [VM guide](https://github.com/rusty-arms/oracle/blob/main/vm/README.md) is the fallback.
+  It built on the lab PC on 2026-10-27. If a rebuild fails, send the last 50 lines of its output to the next session. If it can't be fixed, the rig's [VM guide](https://github.com/rusty-arms/oracle/blob/main/vm/README.md) is the fallback.
 
-- [ ] **Run the smoke test yourself.** It boots the disc, waits ten seconds, takes two screenshots and reads three generic boot values. `--repeat 2` runs it twice and checks that both runs match:
+- [x] **Run the smoke test yourself.** It boots the disc, waits ten seconds, takes two screenshots and reads three generic boot values. `--repeat 2` runs it twice and checks that both runs match:
 
   ```sh
   export ORACLE_DOLPHIN=~/Develop/rusty-arms/dolphin-scripting/build/Binaries/dolphin-emu
@@ -153,6 +153,8 @@ Needed before: the end of Phase 0, and any observer work that records traces.
   ```
 
   It should end with "2 runs identical". If it fails, `dolphin.log` in the `--out` folder has Dolphin's output. Delete both output folders before trying again.
+
+  Passed on 2026-10-27, after a fix: on a Wayland desktop Dolphin never ran a frame. [oracle #3](https://github.com/rusty-arms/oracle/pull/3) makes the rig run Dolphin through X11. Until it is merged, also `export QT_QPA_PLATFORM=xcb` before running the rig.
 
 - [ ] **Phase 0 gate, part 1:** start an observer session in the lab (`cd ~/Develop/rusty-arms/ma-lab && claude`) and ask it to replay the smoke test into `traces/smoke-agent` and `captures/smoke-agent`, then report the trace's hash and the screenshots it saved.
 - [ ] **Phase 0 gate, part 2:** in a session started anywhere else, ask the agent to read a file in the lab. The guard must block it.

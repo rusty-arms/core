@@ -26,7 +26,7 @@ This file shows where the project has got to. It is public on purpose: progress 
 | Observer instructions and guard for the lab | Agent (in `agent-kit`) + owner (install) | Profile shipped in `agent-kit`; owner to install it (checklist section 3) |
 | `specs` skeleton | Agent | Done, 2026-10-27 ([specs #1](https://github.com/rusty-arms/specs/pull/1)) |
 | Lab and disc verification (local only) | Owner | Done, 2026-10-27 ([core #12](https://github.com/rusty-arms/core/pull/12)) |
-| Dolphin oracle rig: scripted input replay to RAM trace and screenshots | Agent | Written and tested against a fake Dolphin, 2026-10-27; owner to create the `oracle` repo and run the first replay (checklist section 6) |
+| Dolphin oracle rig: scripted input replay to RAM trace and screenshots | Agent + owner | Done, 2026-10-27: the owner's smoke test replays from boot and two runs match, after the Wayland and callback fixes in [oracle #3](https://github.com/rusty-arms/oracle/pull/3) (awaiting merge) |
 | Phase 0 gate: an agent replays a script in Dolphin; the hooks block bad actions | Owner + observer session | Not started |
 
 The owner's manual steps are in [docs/setup/owner-checklist.md](docs/setup/owner-checklist.md).
@@ -51,10 +51,17 @@ The owner's manual steps are in [docs/setup/owner-checklist.md](docs/setup/owner
   - the lab's observer profile (`profiles/lab/`) and its install script;
   - hook tests in CI.
 
+- **2026-10-27, first real oracle replay ([oracle #3](https://github.com/rusty-arms/oracle/pull/3)):**
+  - the scripting Dolphin built on the lab PC with the rig's script;
+  - on the lab PC's Wayland desktop Dolphin never ran a frame; the rig now runs it through X11;
+  - the fork can't unregister a callback, so the rig's clean-up failed after every run; fixed;
+  - Dolphin's script log is now on, so the rig's Python errors reach `dolphin.log`;
+  - the owner's smoke test passed: two runs from boot match.
+
 ## Next session (one task)
 
-Fix whatever the owner's first real replay turns up (checklist section 6), then close Phase 0. If it passes first time, Phase 1 can start.
+Close Phase 0: the owner merges oracle #3 and runs the two Phase 0 gate checks (checklist section 6). Then Phase 1 can start.
 
 ## Where the last session stopped
 
-2026-10-27: the oracle rig is written ([design](docs/oracle-rig.md)). It replays an input script in a Python-scripting build of Dolphin, records watched RAM to a CSV trace and frames to PNG, writes a hashed run record, and checks that repeated runs match. Its 20 tests pass on Python 3.8 and 3.13 against a fake Dolphin; it has not yet run on a real one. Its code waits for the `oracle` repo. The owner's steps are checklist section 6. Nothing is half-done.
+2026-10-27: the first real replay works. The smoke test first timed out on the lab PC with an empty trace, because Dolphin hangs while booting under native Wayland. [oracle #3](https://github.com/rusty-arms/oracle/pull/3) forces X11 for Dolphin, fixes the callback clean-up and turns on Dolphin's script log. Its tests pass, and the fixed rig replayed a homebrew test program (no game data) on the real build with matching runs. Still unchecked on a real Dolphin: the screenshot pixel layout and `set_gc_buttons` overriding port 1 (the smoke test presses nothing). Nothing is half-done.
