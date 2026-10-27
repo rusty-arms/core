@@ -9,7 +9,7 @@ This file shows where the project has got to. It is public on purpose: progress 
 | Phase | State |
 |---|---|
 | 0. Foundations | Done, 2026-10-27 |
-| 1. Read the whole disc | In progress: first spec (MST archive) written; `tools` skeleton in review |
+| 1. Read the whole disc | In progress: MST archive spec and `tools` skeleton merged; MST parser next |
 | 2. Walk, shoot, possess | Not started |
 | 3. Online co-op | Not started |
 | 4. Remaster polish | Not started |
@@ -23,7 +23,7 @@ This file shows where the project has got to. It is public on purpose: progress 
 | GitHub org setup: teams, safe-settings App, automatic settings sync | Owner | Done, 2026-10-20 |
 | Create the `agent-kit` and `specs` repos | Owner | Done (checklist section 2) |
 | `agent-kit` Claude Code plugin | Agent + owner | Done, 2026-10-20; installed (checklist section 1) |
-| Observer instructions and guard for the lab | Agent (in `agent-kit`) + owner (install) | Done; installed in the lab (checklist section 3) |
+| Observer instructions and guard for the lab | Agent (in `agent-kit`) + owner (install) | Done; installed in the lab (checklist section 3). Since 2026-10-27 ([agent-kit #2](https://github.com/rusty-arms/agent-kit/pull/2), plugin 0.2.0) the guard also keeps reading tools out of `~/Develop` outside `~/Develop/rusty-arms` |
 | `specs` skeleton | Agent | Done, 2026-10-27 ([specs #1](https://github.com/rusty-arms/specs/pull/1)) |
 | Lab and disc verification (local only) | Owner | Done, 2026-10-27 ([core #12](https://github.com/rusty-arms/core/pull/12)) |
 | Dolphin oracle rig: scripted input replay to RAM trace and screenshots | Agent + owner | Done, 2026-10-27: the owner's smoke test replays from boot and two runs match, after the Wayland and callback fixes in [oracle #3](https://github.com/rusty-arms/oracle/pull/3) |
@@ -71,9 +71,9 @@ The owner's manual steps are in [docs/setup/owner-checklist.md](docs/setup/owner
 | Step | Who | State |
 |---|---|---|
 | Create the `tools` repo | Owner | Done, 2026-10-27 |
-| `tools` skeleton: guard files, implementer rules, shared big-endian reader and writer | Agent | In review, [tools #1](https://github.com/rusty-arms/tools/pull/1); owner to merge with the `admins` bypass |
-| Spec: the disc's main archive format | Observer session | Written, 2026-10-27; in review in `specs` ([`formats/mst-archive.md`](https://github.com/rusty-arms/specs/blob/main/formats/mst-archive.md)) |
-| Parser for the main archive, written from its spec, round-tripping every entry | Agent | Next, once the spec and tools #1 are merged |
+| `tools` skeleton: guard files, implementer rules, shared big-endian reader and writer | Agent | Done, 2026-10-27 ([tools #1](https://github.com/rusty-arms/tools/pull/1)) |
+| Spec: the disc's main archive format | Observer session | Done, 2026-10-27 ([specs #2](https://github.com/rusty-arms/specs/pull/2): [`formats/mst-archive.md`](https://github.com/rusty-arms/specs/blob/main/formats/mst-archive.md)) |
+| Parser for the main archive, written from its spec, round-tripping every entry | Agent | Next |
 
 ## Next session (one task)
 
@@ -81,4 +81,4 @@ Implementer, in `tools`: an MST archive reader and writer, built from the spec a
 
 ## Where the last session stopped
 
-2026-10-27: two sessions ran side by side. An observer wrote the MST archive spec, with 13 provenance entries; its open questions are listed at the end of the spec. Separately, the `tools` repo got its settings and its first PR ([tools #1](https://github.com/rusty-arms/tools/pull/1)): the guard files, the implementer rules and a `ratools` package with a shared big-endian `Reader` and `Writer`, but no parsers yet. Still unchecked from Phase 0: that `set_gc_buttons` overrides port 1, because the smoke test presses nothing. Nothing is half-done.
+2026-10-27: two sessions ran side by side. An observer wrote the MST archive spec ([specs #2](https://github.com/rusty-arms/specs/pull/2)), with 13 provenance entries; its open questions are listed at the end of the spec. Separately, `tools` got its first PR ([tools #1](https://github.com/rusty-arms/tools/pull/1)): the guard files, the implementer rules and a `ratools` package with a shared big-endian `Reader` and `Writer`, but no parsers yet. The guard now fences reading tools into `~/Develop/rusty-arms` ([agent-kit #2](https://github.com/rusty-arms/agent-kit/pull/2)). All three are merged. Still unchecked from Phase 0: that `set_gc_buttons` overrides port 1, because the smoke test presses nothing. Nothing is half-done.
