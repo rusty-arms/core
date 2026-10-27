@@ -23,7 +23,7 @@ Needed before: any local agent session.
   git config core.hooksPath .githooks
   ```
 
-- [ ] Install the tools the hooks and checks use: `git`, `python3`, `yamllint`, and optionally `ruff` (the format/lint hook uses it when it is installed). `git` and `python3` work; `yamllint` and `ruff` are still missing. Check that they work:
+- [x] Install the tools the hooks and checks use: `git`, `python3`, `yamllint`, and optionally `ruff` (the format/lint hook uses it when it is installed). `git` and `python3` work; `yamllint` and `ruff` are still missing. Check that they work:
 
   ```sh
   python3 scripts/check_no_retail.py --all
@@ -31,7 +31,7 @@ Needed before: any local agent session.
   yamllint -s .
   ```
 
-- [ ] **Install the `agent-kit` plugin for your user,** so every Claude Code session on this PC runs the clean-room guard, the format/lint hook and the session rules, wherever it starts. The blocklist must exist first, because the guard blocks every tool call without it. In Claude Code:
+- [x] **Install the `agent-kit` plugin for your user,** so every Claude Code session on this PC runs the clean-room guard, the format/lint hook and the session rules, wherever it starts. The blocklist must exist first, because the guard blocks every tool call without it. In Claude Code:
 
   ```text
   /plugin install agent-kit --marketplace rusty-arms/agent-kit
@@ -45,18 +45,18 @@ Needed before: the `agent-kit` session (next) and the `specs` session.
 
 Create `agent-kit` and `specs` now. Leave `engine` and `tools` until Phase 1 needs them, and `content` until Phase 5. For each repo:
 
-- [ ] **Create it** at github.com/organizations/rusty-arms/repositories/new:
+- [x] **Create it** at github.com/organizations/rusty-arms/repositories/new:
   - owner `rusty-arms`, the exact name, **Public**;
   - tick **Add a README**, so that `main` exists;
   - pick no licence and no `.gitignore`. The first agent PR adds the licence files and the repo's guard files. Code repos are MIT OR Apache-2.0; `specs`, like `core`, is CC BY 4.0 for prose and MIT for scripts.
-- [ ] **Give the Apps access:** in the org's **Settings → GitHub Apps**, configure **Claude** and the **safe-settings** App. If either is set to "Only select repositories", add the new repo.
-- [ ] **Apply the settings:** creating a repo isn't a config change, so the sync doesn't run on its own. In `core`, open **Actions → safe-settings sync → Run workflow**:
+- [x] **Give the Apps access:** in the org's **Settings → GitHub Apps**, configure **Claude** and the **safe-settings** App. If either is set to "Only select repositories", add the new repo.
+- [x] **Apply the settings:** creating a repo isn't a config change, so the sync doesn't run on its own. In `core`, open **Actions → safe-settings sync → Run workflow**:
   1. Run it with **Dry run** ticked, and check that the log lists only the new repo's settings, labels, teams and `main` ruleset.
   2. Run it again with **Dry run** unticked.
 
   Both repos are already listed in [`clean-code.yml`](../../.github/suborgs/clean-code.yml).
-- [ ] **Give it a description and topics:** add `.github/repos/<name>.yml` in a `core` PR, copying [`repos/agent-kit.yml`](../../.github/repos/agent-kit.yml). Merging it runs the sync. `agent-kit` and `specs` already have one.
-- [ ] **Add it to the Claude project's repositories,** so that cloud sessions can clone it and push to it.
+- [x] **Give it a description and topics:** add `.github/repos/<name>.yml` in a `core` PR, copying [`repos/agent-kit.yml`](../../.github/repos/agent-kit.yml). Merging it runs the sync. `agent-kit` and `specs` already have one.
+- [x] **Add it to the Claude project's repositories,** so that cloud sessions can clone it and push to it.
 
 The `main` ruleset requires the `guard` check, which a new repo doesn't have until its first PR adds it. Merge that first PR with your `admins` bypass.
 
@@ -66,7 +66,7 @@ Needed before: the Dolphin oracle rig and any observer work.
 
 The lab is the only place allowed to hold retail data or anything derived from it ([D9](../decisions/0009-lab-off-github.md)). It stays on your PC.
 
-- [ ] Create the folders and a local-only git repo. Never add a remote.
+- [x] Create the folders and a local-only git repo. Never add a remote.
 
   ```sh
   mkdir -p ~/Develop/rusty-arms/ma-lab/{disc,extracted,captures,inputs,traces,notes}
@@ -76,7 +76,7 @@ The lab is the only place allowed to hold retail data or anything derived from i
   git add .gitignore && git commit -m "Lab layout"
   ```
 
-- [ ] Put each kind of file in its folder:
+- [x] Put each kind of file in its folder:
 
   | Folder | What goes in it | Tracked in the lab's git? |
   |---|---|---|
@@ -95,7 +95,7 @@ The lab is the only place allowed to hold retail data or anything derived from i
 
   Don't keep the lab in a cloud-synced folder such as Dropbox, OneDrive or Google Drive. That puts retail data on someone else's servers.
 
-- [ ] **Install the observer profile** from a clone of `agent-kit`. It copies the lab's `CLAUDE.md` and `.claude/settings.json` into the lab, and never overwrites a file:
+- [x] **Install the observer profile** from a clone of `agent-kit`. It copies the lab's `CLAUDE.md` and `.claude/settings.json` into the lab, and never overwrites a file:
 
   ```sh
   git clone https://github.com/rusty-arms/agent-kit.git ~/Develop/rusty-arms/agent-kit
@@ -105,7 +105,7 @@ The lab is the only place allowed to hold retail data or anything derived from i
 
   Until it is installed, don't start Claude Code in the lab.
 
-- [ ] **How the lab is used:**
+- [x] **How the lab is used:**
   - Only observer sessions work in the lab, and they are started from inside it (`cd ~/Develop/rusty-arms/ma-lab && claude`). The guard lets a session read the lab only when it starts there.
   - Observers write what they learn as specs, in their own words, in the `specs` repo, and log each fact in the [provenance log](../provenance-log.md).
   - Implementer sessions never open the lab.
@@ -114,11 +114,11 @@ The lab is the only place allowed to hold retail data or anything derived from i
 
 Needed before: anything that reads the disc.
 
-- [ ] Install Dolphin and add `~/Develop/rusty-arms/ma-lab/disc/` as a game folder.
-- [ ] Open the game's **Properties → Verify** tab and run it. It compares the image's hashes with the Redump database.
-- [ ] Save the result and the hashes it shows in `~/Develop/rusty-arms/ma-lab/disc/hashes.txt`.
-- [ ] Add a dated line to the [provenance log](../provenance-log.md) saying the reference disc was verified. Never upload the image anywhere.
-- [ ] Set Dolphin's internal resolution to 1x. Dolphin's wiki recommends this to avoid cutscene problems.
+- [x] Install Dolphin and add `~/Develop/rusty-arms/ma-lab/disc/` as a game folder.
+- [x] Open the game's **Properties → Verify** tab and run it. It compares the image's hashes with the Redump database.
+- [x] Save the result and the hashes it shows in `~/Develop/rusty-arms/ma-lab/disc/hashes.txt`.
+- [x] Add a dated line to the [provenance log](../provenance-log.md) saying the reference disc was verified. Never upload the image anywhere.
+- [x] Set Dolphin's internal resolution to 1x. Dolphin's wiki recommends this to avoid cutscene problems.
 
 How to script Dolphin for RAM traces and replays is still open. A scriptable-Dolphin MCP server exists, but nobody has confirmed it works with Claude Code. The oracle rig session will work this out.
 
