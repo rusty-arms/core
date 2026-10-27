@@ -41,3 +41,4 @@ Never commit retail game data, disc images, extracted files, or screenshots or c
 - Documentation: [CC BY 4.0](LICENSE).
 - Scripts and configuration (`scripts/`, `.githooks/`, `.github/`, `.claude/`, `docs/setup/*.py`, `docs/setup/*.json`): [MIT](LICENSE-CODE).
 - Future code repos (`engine`, `tools`, `agent-kit`): MIT OR Apache-2.0 (project choice, 2026-10-18).
+- `specs`: CC BY 4.0 for the specs, MIT for scripts and configuration (owner's choice, 2026-10-27).

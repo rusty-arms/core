@@ -48,7 +48,7 @@ Create `agent-kit` and `specs` now. Leave `engine` and `tools` until Phase 1 nee
 - [ ] **Create it** at github.com/organizations/rusty-arms/repositories/new:
   - owner `rusty-arms`, the exact name, **Public**;
   - tick **Add a README**, so that `main` exists;
-  - pick no licence and no `.gitignore`. The first agent PR adds `LICENSE-MIT` and `LICENSE-APACHE` (MIT OR Apache-2.0) and the repo's guard files.
+  - pick no licence and no `.gitignore`. The first agent PR adds the licence files and the repo's guard files. Code repos are MIT OR Apache-2.0; `specs`, like `core`, is CC BY 4.0 for prose and MIT for scripts.
 - [ ] **Give the Apps access:** in the org's **Settings → GitHub Apps**, configure **Claude** and the **safe-settings** App. If either is set to "Only select repositories", add the new repo.
 - [ ] **Apply the settings:** creating a repo isn't a config change, so the sync doesn't run on its own. In `core`, open **Actions → safe-settings sync → Run workflow**:
   1. Run it with **Dry run** ticked, and check that the log lists only the new repo's settings, labels, teams and `main` ruleset.
