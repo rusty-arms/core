@@ -167,7 +167,7 @@ Needed before: the end of Phase 0, and any observer work that records traces.
 
 Needed before: any Phase 1 parser work.
 
-- [ ] **Create the `tools` repo** as in section 2. Its suborg entry is already in [`clean-code.yml`](../../.github/suborgs/clean-code.yml); it still needs `.github/repos/tools.yml`, which an agent can draft for your approval.
+- [ ] **Create the `tools` repo** as in section 2. Its suborg entry and its description and topics ([`repos/tools.yml`](../../.github/repos/tools.yml)) are already in this repo.
 
 ## 5. Legal checks
 
