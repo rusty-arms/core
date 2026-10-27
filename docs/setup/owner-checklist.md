@@ -167,7 +167,8 @@ Needed before: the end of Phase 0, and any observer work that records traces.
 
 Needed before: any Phase 1 parser work.
 
-- [ ] **Create the `tools` repo** as in section 2. Its suborg entry and its description and topics ([`repos/tools.yml`](../../.github/repos/tools.yml)) are already in this repo.
+- [x] **Create the `tools` repo** as in section 2. Its suborg entry and its description and topics ([`repos/tools.yml`](../../.github/repos/tools.yml)) are already in this repo.
+- [ ] **Merge its first PR,** [tools #1](https://github.com/rusty-arms/tools/pull/1), with your `admins` bypass. It adds the `guard` check that the ruleset requires.
 
 ## 5. Legal checks
 

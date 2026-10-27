@@ -9,7 +9,7 @@ This file shows where the project has got to. It is public on purpose: progress 
 | Phase | State |
 |---|---|
 | 0. Foundations | Done, 2026-10-27 |
-| 1. Read the whole disc | Next: the owner creates the `tools` repo |
+| 1. Read the whole disc | In progress: `tools` skeleton in review; first spec (main archive) in progress |
 | 2. Walk, shoot, possess | Not started |
 | 3. Online co-op | Not started |
 | 4. Remaster polish | Not started |
@@ -62,10 +62,19 @@ The owner's manual steps are in [docs/setup/owner-checklist.md](docs/setup/owner
   - the observer checked a screenshot: the right way up, normal colours, nothing scrambled;
   - a session started outside the lab tried to read a lab file, and the guard blocked it.
 
+## Phase 1 steps
+
+| Step | Who | State |
+|---|---|---|
+| Create the `tools` repo | Owner | Done, 2026-10-27 |
+| `tools` skeleton: guard files, implementer rules, shared big-endian reader and writer | Agent | In review, [tools #1](https://github.com/rusty-arms/tools/pull/1); owner to merge with the `admins` bypass |
+| Spec: the disc's main archive format | Observer session | In progress |
+| Parser for the main archive, written from its spec, round-tripping every entry | Agent | Waiting for the spec |
+
 ## Next session (one task)
 
-Start Phase 1. The owner first creates the `tools` repo (checklist section 7). The first observer task is a spec, in `specs`, for the disc's main archive format.
+Once the main archive spec is merged in `specs`: write its parser in `tools`, from the spec alone, with round-trip tests on synthetic fixtures.
 
 ## Where the last session stopped
 
-2026-10-27: Phase 0 is done. Both gate checks passed, and the oracle rig works on the lab PC. Still unchecked on a real Dolphin: that `set_gc_buttons` overrides port 1, because the smoke test presses nothing. The first observer replay with inputs will show it. Screenshots come out at the game's aspect-corrected output size, so they don't depend on the window. Nothing is half-done.
+2026-10-27: the `tools` repo exists with its settings applied, and its first PR ([tools #1](https://github.com/rusty-arms/tools/pull/1)) is open. It holds the guard files copied from core, the implementer rules, CODEOWNERS, and a `ratools` package (Python 3.11 or later, standard library only) with a shared big-endian `Reader` and `Writer` and 10 tests. No format parsers yet. An observer session is writing the main archive spec separately. Still unchecked on a real Dolphin: that `set_gc_buttons` overrides port 1. Nothing is half-done.
