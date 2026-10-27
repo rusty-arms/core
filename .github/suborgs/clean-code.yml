@@ -6,6 +6,7 @@ suborgrepos:
   - engine
   - tools
   - agent-kit
+  - oracle
 
 rulesets:
   - name: main
