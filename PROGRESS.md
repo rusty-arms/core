@@ -9,7 +9,7 @@ This file shows where the project has got to. It is public on purpose: progress 
 | Phase | State |
 |---|---|
 | 0. Foundations | Done, 2026-10-27 |
-| 1. Read the whole disc | In progress: `tools` skeleton in review; first spec (main archive) in progress |
+| 1. Read the whole disc | In progress: MST archive spec and `tools` skeleton merged; MST parser next |
 | 2. Walk, shoot, possess | Not started |
 | 3. Online co-op | Not started |
 | 4. Remaster polish | Not started |
@@ -23,7 +23,7 @@ This file shows where the project has got to. It is public on purpose: progress 
 | GitHub org setup: teams, safe-settings App, automatic settings sync | Owner | Done, 2026-10-20 |
 | Create the `agent-kit` and `specs` repos | Owner | Done (checklist section 2) |
 | `agent-kit` Claude Code plugin | Agent + owner | Done, 2026-10-20; installed (checklist section 1) |
-| Observer instructions and guard for the lab | Agent (in `agent-kit`) + owner (install) | Done; installed in the lab (checklist section 3) |
+| Observer instructions and guard for the lab | Agent (in `agent-kit`) + owner (install) | Done; installed in the lab (checklist section 3). Since 2026-10-27 ([agent-kit #2](https://github.com/rusty-arms/agent-kit/pull/2), plugin 0.2.0) the guard also keeps reading tools out of `~/Develop` outside `~/Develop/rusty-arms` |
 | `specs` skeleton | Agent | Done, 2026-10-27 ([specs #1](https://github.com/rusty-arms/specs/pull/1)) |
 | Lab and disc verification (local only) | Owner | Done, 2026-10-27 ([core #12](https://github.com/rusty-arms/core/pull/12)) |
 | Dolphin oracle rig: scripted input replay to RAM trace and screenshots | Agent + owner | Done, 2026-10-27: the owner's smoke test replays from boot and two runs match, after the Wayland and callback fixes in [oracle #3](https://github.com/rusty-arms/oracle/pull/3) |
@@ -61,20 +61,24 @@ The owner's manual steps are in [docs/setup/owner-checklist.md](docs/setup/owner
   - an observer session in the lab replayed the smoke test: two runs gave identical traces and screenshots, and `run.json` records no error;
   - the observer checked a screenshot: the right way up, normal colours, nothing scrambled;
   - a session started outside the lab tried to read a lab file, and the guard blocked it.
+- **2026-10-27, first spec: the MST archive ([specs `formats/mst-archive.md`](https://github.com/rusty-arms/specs/blob/main/formats/mst-archive.md)):**
+  - an observer session checked every DJs_MA_TOOLs lead about the archive against the owner's disc, and logged 13 provenance entries;
+  - observed: header, entry table, the support table, data offset, name rules, data placement, timestamps, and a content-derived word in each row;
+  - still unknown: the content word's algorithm, platform flag 0x08, the support table's purpose, which type each per-type version word belongs to, and why some textures sit on 2048-byte boundaries.
 
 ## Phase 1 steps
 
 | Step | Who | State |
 |---|---|---|
 | Create the `tools` repo | Owner | Done, 2026-10-27 |
-| `tools` skeleton: guard files, implementer rules, shared big-endian reader and writer | Agent | In review, [tools #1](https://github.com/rusty-arms/tools/pull/1); owner to merge with the `admins` bypass |
-| Spec: the disc's main archive format | Observer session | In progress |
-| Parser for the main archive, written from its spec, round-tripping every entry | Agent | Waiting for the spec |
+| `tools` skeleton: guard files, implementer rules, shared big-endian reader and writer | Agent | Done, 2026-10-27 ([tools #1](https://github.com/rusty-arms/tools/pull/1)) |
+| Spec: the disc's main archive format | Observer session | Done, 2026-10-27 ([specs #2](https://github.com/rusty-arms/specs/pull/2): [`formats/mst-archive.md`](https://github.com/rusty-arms/specs/blob/main/formats/mst-archive.md)) |
+| Parser for the main archive, written from its spec, round-tripping every entry | Agent | Next |
 
 ## Next session (one task)
 
-Once the main archive spec is merged in `specs`: write its parser in `tools`, from the spec alone, with round-trip tests on synthetic fixtures.
+Implementer, in `tools`: an MST archive reader and writer, built from the spec alone, round-tripping synthetic archives; the owner then runs it locally against the disc and reports pass or fail. Or observer: the next format spec. The texture spec would also settle the 2048-byte placement question.
 
 ## Where the last session stopped
 
-2026-10-27: the `tools` repo exists with its settings applied, and its first PR ([tools #1](https://github.com/rusty-arms/tools/pull/1)) is open. It holds the guard files copied from core, the implementer rules, CODEOWNERS, and a `ratools` package (Python 3.11 or later, standard library only) with a shared big-endian `Reader` and `Writer` and 10 tests. No format parsers yet. An observer session is writing the main archive spec separately. Still unchecked on a real Dolphin: that `set_gc_buttons` overrides port 1. Nothing is half-done.
+2026-10-27: two sessions ran side by side. An observer wrote the MST archive spec ([specs #2](https://github.com/rusty-arms/specs/pull/2)), with 13 provenance entries; its open questions are listed at the end of the spec. Separately, `tools` got its first PR ([tools #1](https://github.com/rusty-arms/tools/pull/1)): the guard files, the implementer rules and a `ratools` package with a shared big-endian `Reader` and `Writer`, but no parsers yet. The guard now fences reading tools into `~/Develop/rusty-arms` ([agent-kit #2](https://github.com/rusty-arms/agent-kit/pull/2)). All three are merged. Still unchecked from Phase 0: that `set_gc_buttons` overrides port 1, because the smoke test presses nothing. Nothing is half-done.
