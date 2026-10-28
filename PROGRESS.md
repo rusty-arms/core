@@ -9,7 +9,7 @@ This file shows where the project has got to. It is public on purpose: progress 
 | Phase | State |
 |---|---|
 | 0. Foundations | Done, 2026-10-27 |
-| 1. Read the whole disc | In progress: MST archive spec and `tools` skeleton merged; MST parser next |
+| 1. Read the whole disc | In progress: MST archive spec merged; MST reader and writer in review |
 | 2. Walk, shoot, possess | Not started |
 | 3. Online co-op | Not started |
 | 4. Remaster polish | Not started |
@@ -73,12 +73,12 @@ The owner's manual steps are in [docs/setup/owner-checklist.md](docs/setup/owner
 | Create the `tools` repo | Owner | Done, 2026-10-27 |
 | `tools` skeleton: guard files, implementer rules, shared big-endian reader and writer | Agent | Done, 2026-10-27 ([tools #1](https://github.com/rusty-arms/tools/pull/1)) |
 | Spec: the disc's main archive format | Observer session | Done, 2026-10-27 ([specs #2](https://github.com/rusty-arms/specs/pull/2): [`formats/mst-archive.md`](https://github.com/rusty-arms/specs/blob/main/formats/mst-archive.md)) |
-| Parser for the main archive, written from its spec, round-tripping every entry | Agent | Next |
+| Parser for the main archive, written from its spec, round-tripping every entry | Agent + owner | In review, [tools #2](https://github.com/rusty-arms/tools/pull/2); the owner's disc passed `python3 -m ratools.mst check` on 2026-10-28 |
 
 ## Next session (one task)
 
-Implementer, in `tools`: an MST archive reader and writer, built from the spec alone, round-tripping synthetic archives; the owner then runs it locally against the disc and reports pass or fail. Or observer: the next format spec. The texture spec would also settle the 2048-byte placement question.
+Observer, in the lab: the next format spec. The texture spec would also settle the 2048-byte placement question in the MST spec.
 
 ## Where the last session stopped
 
-2026-10-27: two sessions ran side by side. An observer wrote the MST archive spec ([specs #2](https://github.com/rusty-arms/specs/pull/2)), with 13 provenance entries; its open questions are listed at the end of the spec. Separately, `tools` got its first PR ([tools #1](https://github.com/rusty-arms/tools/pull/1)): the guard files, the implementer rules and a `ratools` package with a shared big-endian `Reader` and `Writer`, but no parsers yet. The guard now fences reading tools into `~/Develop/rusty-arms` ([agent-kit #2](https://github.com/rusty-arms/agent-kit/pull/2)). All three are merged. Still unchecked from Phase 0: that `set_gc_buttons` overrides port 1, because the smoke test presses nothing. Nothing is half-done.
+2026-10-27: the MST archive reader, writer and spec check are in review as [tools #2](https://github.com/rusty-arms/tools/pull/2), written from the spec alone and tested on synthetic archives only (44 tests). The shared `Reader` and `Writer` now also take little-endian byte order. Left out because the spec has them only as leads or doesn't say: 16- and 24-byte entry names (those versions are refused), the content word's algorithm, and where an archive with no entries ends. On 2026-10-28 the owner ran `python3 -m ratools.mst check` on the disc and it passed: every spec section holds and the archive round-trips byte for byte. Waiting on the owner to merge. Still unchecked on a real Dolphin: that `set_gc_buttons` overrides port 1. Nothing is half-done.
