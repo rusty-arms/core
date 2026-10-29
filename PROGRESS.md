@@ -9,7 +9,7 @@ This file shows where the project has got to. It is public on purpose: progress 
 | Phase | State |
 |---|---|
 | 0. Foundations | Done, 2026-10-27 |
-| 1. Read the whole disc | In progress: MST archive spec and reader/writer merged; binary CSV spec in review |
+| 1. Read the whole disc | In progress: MST archive spec and reader/writer merged; binary CSV spec in review; its reader and writer pass on the disc |
 | 2. Walk, shoot, possess | Not started |
 | 3. Online co-op | Not started |
 | 4. Remaster polish | Not started |
@@ -75,12 +75,14 @@ The owner's manual steps are in [docs/setup/owner-checklist.md](docs/setup/owner
 | Spec: the disc's main archive format | Observer session | Done, 2026-10-27 ([specs #2](https://github.com/rusty-arms/specs/pull/2): [`formats/mst-archive.md`](https://github.com/rusty-arms/specs/blob/main/formats/mst-archive.md)) |
 | Parser for the main archive, written from its spec, round-tripping every entry | Agent + owner | Done, 2026-10-28 ([tools #2](https://github.com/rusty-arms/tools/pull/2)); the owner's disc passed `python3 -m ratools.mst check` |
 | Spec: binary CSV tables (`csv` entries) | Observer session | In review, [specs #3](https://github.com/rusty-arms/specs/pull/3) ([`formats/binary-csv.md`](https://github.com/rusty-arms/specs/blob/main/formats/binary-csv.md)), with 11 provenance entries in [core #20](https://github.com/rusty-arms/core/pull/20) |
-| Reader and writer for binary CSV tables, written from its spec, rebuilding every table byte for byte | Agent + owner | Waiting for the spec |
+| Reader and writer for binary CSV tables, written from its spec, rebuilding every table byte for byte | Agent + owner | In review, [tools #3](https://github.com/rusty-arms/tools/pull/3); all 1291 tables on the owner's disc passed `python3 -m ratools.csvtable check` on 2026-10-29 |
 
 ## Next session (one task)
 
-Implementer, in `tools`: a binary CSV reader and writer, built from the spec alone, rebuilding synthetic tables byte for byte; the owner then checks that every `csv` entry on the disc rebuilds exactly. Or observer: the next format spec. The texture spec would also settle the 2048-byte placement question in the MST spec.
+Observer, in the lab: the next format spec. The texture spec would also settle the 2048-byte placement question in the MST spec.
 
 ## Where the last session stopped
+
+2026-10-29: the binary CSV reader, writer and check are in review as [tools #3](https://github.com/rusty-arms/tools/pull/3), written from the spec alone and tested on synthetic tables only (28 tests). The owner ran `python3 -m ratools.csvtable check` on the disc: all 1291 tables pass every spec section and rebuild byte for byte. Field type 3 is refused, since it is a lead only.
 
 2026-10-28: an observer session wrote the binary CSV table spec (`formats/binary-csv.md`), with 11 provenance entries. Every fact was checked across all 1291 `csv` entries on the disc, and a layout-only encoder rebuilt every table byte for byte. Two items are leads only: a fourth field type that never occurs, and little-endian Xbox tables. Open: the always-zero header word, whether the game reads the size, offset and index fields, and how it looks rows up when keys repeat. The lab session can't push, so the owner pushed both branches and opened [specs #3](https://github.com/rusty-arms/specs/pull/3) and [core #20](https://github.com/rusty-arms/core/pull/20). The MST reader and writer ([tools #2](https://github.com/rusty-arms/tools/pull/2)) is merged. Still unchecked on a real Dolphin: that `set_gc_buttons` overrides port 1. Nothing is half-done.
