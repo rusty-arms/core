@@ -15,6 +15,83 @@ Every format fact and every behaviour fact gets a dated entry: what was learned,
 
 ## Entries
 
+### 2026-10-28: Binary CSV table header
+- **Type:** format
+- **What:** A binary CSV table (an MST entry of type csv) starts with four 32-bit words: the table's size in bytes, which always equals the entry's length; the row count, at least 1; the row directory offset, always 16; and a word that is always zero, whose meaning is unknown. The lead calls the last word flags.
+- **How:** Lead: DJs_MA_TOOLs (MIT) at commit `b74fc4b`, `mst_loaders/csv.py` and `lib/csv_classes.py`. Checked: structural analysis of all 1291 `csv` entries in the owner's GameCube archive in the lab, read with the `tools` MST reader, with throwaway scripts that print only counts.
+- **Session:** Observer session (Claude Code) in the lab, 2026-10-28
+- **Verified:** yes; the meaning of the last word is unknown
+
+### 2026-10-28: Binary CSV row directory
+- **Type:** format
+- **What:** The row directory has one 16-byte record per row, in row order: key offset (32 bits), key length without the NUL (32 bits, never zero), field count (16 bits, never zero, at most 816 seen), row index (16 bits, always equal to the row's position from 0) and fields offset (32 bits).
+- **How:** Lead: DJs_MA_TOOLs (MIT) at commit `b74fc4b`, `mst_loaders/csv.py`. Checked: structural analysis of all 1291 `csv` entries in the owner's GameCube archive in the lab, read with the `tools` MST reader, with throwaway scripts that print only counts. Every one of the 6495 rows matched.
+- **Session:** Observer session (Claude Code) in the lab, 2026-10-28
+- **Verified:** yes
+
+### 2026-10-28: Binary CSV row keys
+- **Type:** format
+- **What:** A row key is printable ASCII (0x20 to 0x7E), at most 43 bytes, followed by one NUL, then zero padding to a multiple of 4 from the table's start; the fields start there. Keys themselves are not aligned. Keys repeat within 20 of the 1291 tables, always as exact byte-for-byte duplicates.
+- **How:** Checked: structural analysis of all 1291 `csv` entries in the owner's GameCube archive in the lab, read with the `tools` MST reader, with throwaway scripts that print only counts. Every one of the 6495 rows matched.
+- **Session:** Observer session (Claude Code) in the lab, 2026-10-28
+- **Verified:** yes
+
+### 2026-10-28: Binary CSV field records and types
+- **Type:** format
+- **What:** Each field is a 12-byte record of three 32-bit words, contiguous per row. Type 0 is a string (offset, byte length), type 1 a number (float, then zero) and type 2 a wide string (offset, length in UTF-16 code units). The disc has 53903 numbers, 28512 strings and 1326 wide strings, and no other type. A type 3 ("count") appears only in the lead.
+- **How:** Lead: DJs_MA_TOOLs (MIT) at commit `b74fc4b`, `mst_loaders/csv.py` and `lib/csv_classes.py`. Checked: structural analysis of all 1291 `csv` entries in the owner's GameCube archive in the lab, read with the `tools` MST reader, with throwaway scripts that print only counts. All 83741 fields matched.
+- **Session:** Observer session (Claude Code) in the lab, 2026-10-28
+- **Verified:** yes for types 0 to 2; no (lead only) for type 3
+
+### 2026-10-28: Binary CSV numbers
+- **Type:** format
+- **What:** Numbers are IEEE 754 single-precision floats in the table's byte order. All 53903 are finite and none is subnormal; 15 are negative zero; 10101 are not whole. Rounding to five decimal places, as the lead's text export does, changes the stored bits of 3411 of them, so a writer must keep each number's exact 32 bits.
+- **How:** Lead: DJs_MA_TOOLs (MIT) at commit `b74fc4b`, `mst_loaders/csv.py`. Checked: structural analysis of all 1291 `csv` entries in the owner's GameCube archive in the lab, read with the `tools` MST reader, with throwaway scripts that print only counts. The five-decimal effect was measured by formatting each number that way and converting it back.
+- **Session:** Observer session (Claude Code) in the lab, 2026-10-28
+- **Verified:** yes
+
+### 2026-10-28: Binary CSV narrow strings
+- **Type:** format
+- **What:** Type 0 strings are printable ASCII (0x20 to 0x7E) followed by one NUL, at most 52 bytes, never empty and never aligned; the length excludes the NUL.
+- **How:** Checked: structural analysis of all 1291 `csv` entries in the owner's GameCube archive in the lab, read with the `tools` MST reader, with throwaway scripts that print only counts. All 28512 strings matched.
+- **Session:** Observer session (Claude Code) in the lab, 2026-10-28
+- **Verified:** yes
+
+### 2026-10-28: Binary CSV wide strings
+- **Type:** format
+- **What:** Type 2 strings are UTF-16 in the table's byte order, big-endian on GameCube, followed by one zero code unit (two zero bytes). The length counts code units. Every code unit is 0x20 to 0x7E or a line feed (in 45 strings); none needs a surrogate pair; one is empty; the longest has 142 units. 126 of 1326 start at an odd offset, so they are not aligned. Wide strings occur in 89 tables, and nothing outside the field records marks them.
+- **How:** Lead: DJs_MA_TOOLs (MIT) at commit `b74fc4b`, `mst_loaders/csv.py`. Checked: structural analysis of all 1291 `csv` entries in the owner's GameCube archive in the lab, read with the `tools` MST reader, with throwaway scripts that print only counts. All 1326 wide strings matched.
+- **Session:** Observer session (Claude Code) in the lab, 2026-10-28
+- **Verified:** yes
+
+### 2026-10-28: Binary CSV layout and padding
+- **Type:** format
+- **What:** After the header and directory, each row in order stores its key and NUL, zero padding to a multiple of 4, its field records, then its strings' text in field order, each directly after the last. The next row's key follows directly. There are no other gaps, no shared strings and no padding at the end: 582 of 1291 tables have a length that is not a multiple of 4.
+- **How:** Checked: structural analysis of all 1291 `csv` entries in the owner's GameCube archive in the lab, read with the `tools` MST reader, with throwaway scripts that print only counts. Every key and string offset was compared with the position this layout predicts, and every gap with zero bytes.
+- **Session:** Observer session (Claude Code) in the lab, 2026-10-28
+- **Verified:** yes
+
+### 2026-10-28: Binary CSV variation between tables
+- **Type:** format
+- **What:** There is no per-table schema. Only 217 of 1291 tables have one field count for every row, and only 199 have the same sequence of field types in every row. Of the other 1092, 935 have a field position whose type differs between rows.
+- **How:** Checked: structural analysis of all 1291 `csv` entries in the owner's GameCube archive in the lab, read with the `tools` MST reader, with throwaway scripts that print only counts.
+- **Session:** Observer session (Claude Code) in the lab, 2026-10-28
+- **Verified:** yes
+
+### 2026-10-28: Binary CSV byte order
+- **Type:** format
+- **What:** On GameCube every field of a binary CSV table, wide-string code units included, is big-endian like the archive. That Xbox tables are little-endian is a lead. The lead's command-line help gets the GameCube byte order the wrong way round; its code gets it right.
+- **How:** Lead: DJs_MA_TOOLs (MIT) at commit `b74fc4b`, `csv_rebuilder.py` and `lib/csv_classes.py`. Checked: structural analysis of all 1291 `csv` entries in the owner's GameCube archive in the lab, read with the `tools` MST reader, with throwaway scripts that print only counts. Every field decodes consistently as big-endian, and every wide-string code unit is in range only when read as big-endian.
+- **Session:** Observer session (Claude Code) in the lab, 2026-10-28
+- **Verified:** yes for GameCube; no (lead only) for Xbox
+
+### 2026-10-28: Binary CSV byte-for-byte rebuild
+- **Type:** format
+- **What:** Decoding every table to its rows (key plus typed fields) and re-encoding them with the layout in the spec reproduces all 1291 csv entries exactly, byte for byte.
+- **How:** Round-trip analysis of all 1291 `csv` entries in the lab, with a throwaway encoder written in the session from the observed layout, not from the lead's writer. The script printed only the number of matches.
+- **Session:** Observer session (Claude Code) in the lab, 2026-10-28
+- **Verified:** yes
+
 ### 2026-10-27: MST magic and byte order
 - **Type:** format
 - **What:** The archive's magic is the 32-bit value 0x474E4146 in the archive's own byte order: `GNAF` in big-endian, `FANG` in little-endian. The GameCube archive is `GNAF` and big-endian throughout. That `FANG` means little-endian for Xbox and PS2 is still a lead. The DJs_MA_TOOLs README's help text has GameCube byte order the wrong way round, and its code is right.
